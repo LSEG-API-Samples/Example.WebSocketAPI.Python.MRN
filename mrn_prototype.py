@@ -31,7 +31,14 @@ mrn_item = 'MRN_STORY'
 web_socket_app = None
 web_socket_open = False
 
+_news_envelopes = []
+
 ''' MRN Process Code '''
+
+
+def decodeFieldList(fieldList_dict):
+    for key, value in fieldList_dict.items():
+        print("Name = %s: Value = %s" % (key, value))
 
 
 def send_mrn_request(ws):
@@ -49,12 +56,34 @@ def send_mrn_request(ws):
     print(json.dumps(mrn_req_json, sort_keys=True, indent=2, separators=(',', ':')))
 
 
-def processRefresh(ws):
-    return None
+def processRefresh(ws, message_json):
+
+    print("RECEIVED: Refresh Message")
+    decodeFieldList(message_json["Fields"])
 
 
-def processUpdate(ws):
-    return None
+def processUpdate(ws, message_json):
+    #print("RECEIVED: Update Message")
+    #print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
+
+    fields_data = message_json["Fields"]
+    # Dump the FieldList first (for informational purposes)
+    decodeFieldList(message_json["Fields"])
+
+    # Get data for all requried fields
+    fragment = fields_data["FRAGMENT"]
+    frag_num = fields_data["FRAG_NUM"]
+    guid = fields_data["GUID"]
+    mrn_src = fields_data["MRN_SRC"]
+    tot_size = fields_data["TOT_SIZE"]
+
+    # if frag_num > 1:  # We are now processing more than one part of an envelope - retrieve the current details
+    #    i = 0
+
+
+def processStatus(ws, message_json):
+    print("RECEIVED: Status Message")
+    print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
 
 ''' JSON-OMM Process functions '''
@@ -63,12 +92,19 @@ def processUpdate(ws):
 def process_message(ws, message_json):
     """ Parse at high level and output JSON of message """
     message_type = message_json['Type']
+    message_domain = message_json['Domain']
 
     if message_type == "Refresh":
         if 'Domain' in message_json:
-            message_domain = message_json['Domain']
+            #message_domain = message_json['Domain']
             if message_domain == "Login":
                 process_login_response(ws, message_json)
+            elif message_domain == mrn_domain:
+                processRefresh(ws, message_json)
+    elif message_type == "Update" and message_domain == mrn_domain:
+        processUpdate(ws, message_json)
+    elif message_type == "Status":
+        processStatus(ws, message_json)
     elif message_type == "Ping":
         pong_json = {'Type': 'Pong'}
         ws.send(json.dumps(pong_json))
@@ -124,9 +160,9 @@ def send_login_request(ws):
 
 def on_message(ws, message):
     """ Called when message received, parse message into JSON for processing """
-    print("RECEIVED: ")
+    #print("RECEIVED: ")
     message_json = json.loads(message)
-    print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
+    #print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
     for singleMsg in message_json:
         process_message(ws, singleMsg)
