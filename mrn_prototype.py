@@ -17,6 +17,8 @@ import json
 import websocket
 import threading
 from threading import Thread, Event
+import base64
+import zlib
 
 # Global Default Variables
 hostname = '172.20.33.30'
@@ -75,10 +77,24 @@ def processUpdate(ws, message_json):
     frag_num = fields_data["FRAG_NUM"]
     guid = fields_data["GUID"]
     mrn_src = fields_data["MRN_SRC"]
-    tot_size = fields_data["TOT_SIZE"]
+    tot_size = int(fields_data["TOT_SIZE"])
+    try:
+        fragment_decoded = base64.b64decode(fragment)
+        print("GUID  = %s" % guid)
+        print("TOT_SIZE = %d" % tot_size)
+        print("fragment length = %d" % len(fragment_decoded))
+        # if frag_num > 1:  # We are now processing more than one part of an envelope - retrieve the current details
 
-    # if frag_num > 1:  # We are now processing more than one part of an envelope - retrieve the current details
-    #    i = 0
+        if tot_size == len(fragment_decoded):  # Completed News
+            decompressed_data = zlib.decompress(
+                fragment_decoded, zlib.MAX_WBITS | 32)
+            print("News = %s" % decompressed_data)
+        else:
+            print("Multiple Fragments!!")
+    except zlib.error as error:
+        print(error)
+    except:
+        print("Error!!!")
 
 
 def processStatus(ws, message_json):
