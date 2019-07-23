@@ -47,7 +47,7 @@ def send_mrn_request(ws):
     """ Create and send MRN request """
     mrn_req_json = {
         'ID': 2,
-        'Domain': mrn_domain,
+        "Domain": mrn_domain,
         'Key': {
             'Name': mrn_item
         }
@@ -84,9 +84,9 @@ def processUpdate(ws, message_json):
         guid = fields_data["GUID"]
         mrn_src = fields_data["MRN_SRC"]
 
-        print("GUID  = %s" % guid)
-        print("FRAG_NUM = %d" % frag_num)
-        print("MRN_SRC = %s" % mrn_src)
+        #print("GUID  = %s" % guid)
+        #print("FRAG_NUM = %d" % frag_num)
+        #print("MRN_SRC = %s" % mrn_src)
 
         #fragment_decoded = base64.b64decode(fragment)
         print("fragment length = %d" % len(fragment))
@@ -94,14 +94,15 @@ def processUpdate(ws, message_json):
             guid_index = next((index for (index, d) in enumerate(
                 _news_envelopes) if d["guid"] == guid), None)
             envelop = _news_envelopes[guid_index]
-            if envelop:
+            if envelop and envelop["data"]["mrn_src"] == mrn_src and frag_num == envelop["data"]["frag_num"] + 1:
                 print("process multiple fragments for guid %s" %
                       envelop["guid"])
                 # print(envelop)
                 #print("fragment before merge = %d" % len(envelop["data"]["fragment"]))
 
-                # Merge incoming fragment to current fragment
+                # Merge incoming data to existing envelop
                 envelop["data"]["fragment"] = envelop["data"]["fragment"] + fragment
+                envelop["data"]["frag_num"] = frag_num
 
                 #print("TOT_SIZE from envelop = %d" % envelop["data"]["tot_size"])
                 #print("fragment after merge = %d" % len(envelop["data"]["fragment"]))
@@ -109,6 +110,10 @@ def processUpdate(ws, message_json):
                     parseNewsData(envelop["data"]["fragment"])
                 else:
                     return None
+            else:
+                print("Error: Cannot find fragment for GUID %s with matching FRAG_NUM or MRN_SRC %s" % (
+                    guid, mrn_src))
+                return None
         else:  # FRAG_NUM:1 The first fragment
             tot_size = int(fields_data["TOT_SIZE"])
             print("TOT_SIZE = %d" % tot_size)
@@ -146,17 +151,17 @@ def processStatus(ws, message_json):
 def process_message(ws, message_json):
     """ Parse at high level and output JSON of message """
     message_type = message_json['Type']
-    message_domain = message_json['Domain']
 
     if message_type == "Refresh":
-        if 'Domain' in message_json:
-            #message_domain = message_json['Domain']
+        if "Domain" in message_json:
+            message_domain = message_json["Domain"]
             if message_domain == "Login":
                 process_login_response(ws, message_json)
-            elif message_domain == mrn_domain:
+            elif message_domain:
                 processRefresh(ws, message_json)
-    elif message_type == "Update" and message_domain == mrn_domain:
-        processUpdate(ws, message_json)
+    elif message_type == "Update":
+        if "Domain" in message_json and message_json["Domain"] == mrn_domain:
+            processUpdate(ws, message_json)
     elif message_type == "Status":
         processStatus(ws, message_json)
     elif message_type == "Ping":
@@ -190,7 +195,7 @@ def send_login_request(ws):
     """ Generate a login request from command line data (or defaults) and send """
     login_json = {
         'ID': 1,
-        'Domain': 'Login',
+        "Domain": 'Login',
         'Key': {
             'Name': '',
             'Elements': {
@@ -214,9 +219,9 @@ def send_login_request(ws):
 
 def on_message(ws, message):
     """ Called when message received, parse message into JSON for processing """
-    #print("RECEIVED: ")
+    print("RECEIVED: ")
     message_json = json.loads(message)
-    #print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
+    print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
     for singleMsg in message_json:
         process_message(ws, singleMsg)
