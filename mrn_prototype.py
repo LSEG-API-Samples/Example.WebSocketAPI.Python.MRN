@@ -7,7 +7,7 @@
 
 
 #!/usr/bin/env python
-""" Simple example of outputting Market Price JSON data using Websockets """
+""" Simple example of outputting Machine Readable News JSON data using Websockets """
 
 import sys
 import time
@@ -28,6 +28,7 @@ app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
 mrn_domain = 'NewsTextAnalytics'
 mrn_item = 'MRN_STORY'
+mrn_item = 'MRN_TRNA'
 
 # Global Variables
 web_socket_app = None
@@ -64,11 +65,6 @@ def processRefresh(ws, message_json):
     decodeFieldList(message_json["Fields"])
 
 
-def parseNewsData(fragment):
-    decompressed_data = zlib.decompress(fragment, zlib.MAX_WBITS | 32)
-    print("News = %s" % decompressed_data)
-
-
 def processUpdate(ws, message_json):
     print("RECEIVED: Update Message")
     # print(message_json)
@@ -76,6 +72,9 @@ def processUpdate(ws, message_json):
     fields_data = message_json["Fields"]
     # Dump the FieldList first (for informational purposes)
     decodeFieldList(message_json["Fields"])
+
+    # declare variables
+    tot_size = 0
 
     try:
         # Get data for all requried fields
@@ -89,7 +88,7 @@ def processUpdate(ws, message_json):
         #print("MRN_SRC = %s" % mrn_src)
 
         #fragment_decoded = base64.b64decode(fragment)
-        print("fragment length = %d" % len(fragment))
+
         if frag_num > 1:  # We are now processing more than one part of an envelope - retrieve the current details
             guid_index = next((index for (index, d) in enumerate(
                 _news_envelopes) if d["guid"] == guid), None)
@@ -101,14 +100,14 @@ def processUpdate(ws, message_json):
                 #print("fragment before merge = %d" % len(envelop["data"]["fragment"]))
 
                 # Merge incoming data to existing envelop
-                envelop["data"]["fragment"] = envelop["data"]["fragment"] + fragment
+                fragment = envelop["data"]["fragment"] = envelop["data"]["fragment"] + fragment
                 envelop["data"]["frag_num"] = frag_num
-
+                tot_size = envelop["data"]["tot_size"]
+                print("TOT_SIZE = %d" % tot_size)
+                print("fragment length = %d" % len(fragment))
                 #print("TOT_SIZE from envelop = %d" % envelop["data"]["tot_size"])
                 #print("fragment after merge = %d" % len(envelop["data"]["fragment"]))
-                if envelop["data"]["tot_size"] == len(envelop["data"]["fragment"]):
-                    parseNewsData(envelop["data"]["fragment"])
-                else:
+                if tot_size != len(fragment):
                     return None
             else:
                 print("Error: Cannot find fragment for GUID %s with matching FRAG_NUM or MRN_SRC %s" % (
@@ -116,11 +115,9 @@ def processUpdate(ws, message_json):
                 return None
         else:  # FRAG_NUM:1 The first fragment
             tot_size = int(fields_data["TOT_SIZE"])
+            print("fragment length = %d" % len(fragment))
             print("TOT_SIZE = %d" % tot_size)
-            if tot_size == len(fragment):  # Completed News
-                parseNewsData(fragment)
-                pass
-            else:
+            if tot_size != len(fragment):  # Completed News
                 #print("Receiving Multiple Fragments!!")
                 print("Add new fragments to news envelop for guid %s" % guid)
                 _news_envelopes.append({
@@ -132,6 +129,13 @@ def processUpdate(ws, message_json):
                         "tot_size": tot_size
                     }
                 })
+                return None
+
+        # News Fragment completed, decompress and print data as JSON
+        if tot_size == len(fragment):
+            decompressed_data = zlib.decompress(fragment, zlib.MAX_WBITS | 32)
+            print("News = %s" % json.loads(decompressed_data))
+
     except KeyError as keyerror:
         print('KeyError exception: ', keyerror)
     except zlib.error as error:
@@ -176,19 +180,6 @@ def process_login_response(ws, message_json):
     """ Send item request """
     # send_market_price_request(ws)
     send_mrn_request(ws)
-
-
-def send_market_price_request(ws):
-    """ Create and send simple Market Price request """
-    mp_req_json = {
-        'ID': 2,
-        'Key': {
-            'Name': ['EUR=', 'JPY=', 'THB='],
-        },
-    }
-    ws.send(json.dumps(mp_req_json))
-    print("SENT:")
-    print(json.dumps(mp_req_json, sort_keys=True, indent=2, separators=(',', ':')))
 
 
 def send_login_request(ws):
