@@ -28,7 +28,7 @@ app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
 mrn_domain = 'NewsTextAnalytics'
 mrn_item = 'MRN_STORY'
-mrn_item = 'MRN_TRNA'
+#mrn_item = 'MRN_TRNA'
 
 # Global Variables
 web_socket_app = None
@@ -65,16 +65,17 @@ def processRefresh(ws, message_json):
     decodeFieldList(message_json["Fields"])
 
 
-def processUpdate(ws, message_json):
+def processMRNUpdate(ws, message_json):  # process incoming News Update messages
     print("RECEIVED: Update Message")
     # print(message_json)
 
     fields_data = message_json["Fields"]
     # Dump the FieldList first (for informational purposes)
-    decodeFieldList(message_json["Fields"])
+    # decodeFieldList(message_json["Fields"])
 
     # declare variables
     tot_size = 0
+    guid = None
 
     try:
         # Get data for all requried fields
@@ -96,29 +97,30 @@ def processUpdate(ws, message_json):
             if envelop and envelop["data"]["mrn_src"] == mrn_src and frag_num == envelop["data"]["frag_num"] + 1:
                 print("process multiple fragments for guid %s" %
                       envelop["guid"])
-                # print(envelop)
+
                 #print("fragment before merge = %d" % len(envelop["data"]["fragment"]))
 
-                # Merge incoming data to existing envelop
+                # Merge incoming data to existing envelop and getting FRAGMENT and TOT_SIZE data to local variables
                 fragment = envelop["data"]["fragment"] = envelop["data"]["fragment"] + fragment
                 envelop["data"]["frag_num"] = frag_num
                 tot_size = envelop["data"]["tot_size"]
                 print("TOT_SIZE = %d" % tot_size)
-                print("fragment length = %d" % len(fragment))
-                #print("TOT_SIZE from envelop = %d" % envelop["data"]["tot_size"])
-                #print("fragment after merge = %d" % len(envelop["data"]["fragment"]))
+                print("Current FRAGMENT length = %d" % len(fragment))
+
+                # The multiple fragments news are not completed, waiting.
                 if tot_size != len(fragment):
                     return None
+                # The multiple fragments news are completed, delete assoiclate GUID dictionary
+                elif tot_size == len(fragment):
+                    del _news_envelopes[guid_index]
             else:
                 print("Error: Cannot find fragment for GUID %s with matching FRAG_NUM or MRN_SRC %s" % (
                     guid, mrn_src))
                 return None
-        else:  # FRAG_NUM:1 The first fragment
+        else:  # FRAG_NUM = 1 The first fragment
             tot_size = int(fields_data["TOT_SIZE"])
-            print("fragment length = %d" % len(fragment))
-            print("TOT_SIZE = %d" % tot_size)
+            print("FRAGMENT length = %d" % len(fragment))
             if tot_size != len(fragment):  # Completed News
-                #print("Receiving Multiple Fragments!!")
                 print("Add new fragments to news envelop for guid %s" % guid)
                 _news_envelopes.append({
                     "guid": guid,
@@ -131,20 +133,26 @@ def processUpdate(ws, message_json):
                 })
                 return None
 
-        # News Fragment completed, decompress and print data as JSON
+        # News Fragment(s) completed, decompress and print data as JSON to console
         if tot_size == len(fragment):
             decompressed_data = zlib.decompress(fragment, zlib.MAX_WBITS | 32)
             print("News = %s" % json.loads(decompressed_data))
 
     except KeyError as keyerror:
         print('KeyError exception: ', keyerror)
+    except IndexError as indexerror:
+        print('IndexError exception: ', indexerror)
     except zlib.error as error:
         print('zlib exception: ', error)
+    # Some console environments like Windows may encounter this unicode display as a limitation of OS
+    except UnicodeEncodeError as encodeerror:
+        print("UnicodeEncodeError exception. Cannot decode unicode character for %s in this enviroment: " %
+              guid, encodeerror)
     except Exception as e:
         print('exception: ', sys.exc_info()[0])
 
 
-def processStatus(ws, message_json):
+def processStatus(ws, message_json):  # process incoming status message
     print("RECEIVED: Status Message")
     print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
@@ -165,7 +173,7 @@ def process_message(ws, message_json):
                 processRefresh(ws, message_json)
     elif message_type == "Update":
         if "Domain" in message_json and message_json["Domain"] == mrn_domain:
-            processUpdate(ws, message_json)
+            processMRNUpdate(ws, message_json)
     elif message_type == "Status":
         processStatus(ws, message_json)
     elif message_type == "Ping":
