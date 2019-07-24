@@ -2,7 +2,7 @@
 # |            This source code is provided under the Apache 2.0 license      --
 # |  and is provided AS IS with no warranty or guarantee of fit for purpose.  --
 # |                See the project's LICENSE.md for details.                  --
-# |           Copyright Thomson Reuters 2017. All rights reserved.            --
+# |           Copyright Refinitiv 2019. All rights reserved.            --
 # |-----------------------------------------------------------------------------
 
 
@@ -21,7 +21,7 @@ import base64
 import zlib
 
 # Global Default Variables
-hostname = '172.20.33.30'
+hostname = '127.0.0.1'
 port = '15000'
 user = 'root'
 app_id = '256'
@@ -66,7 +66,7 @@ def processRefresh(ws, message_json):
 
 
 def processMRNUpdate(ws, message_json):  # process incoming News Update messages
-    print("RECEIVED: Update Message")
+    #print("RECEIVED: Update Message")
     # print(message_json)
 
     fields_data = message_json["Fields"]
@@ -135,6 +135,7 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
 
         # News Fragment(s) completed, decompress and print data as JSON to console
         if tot_size == len(fragment):
+            print("decompress News FRAGMENT(s) for GUID  %s" % guid)
             decompressed_data = zlib.decompress(fragment, zlib.MAX_WBITS | 32)
             print("News = %s" % json.loads(decompressed_data))
 
@@ -142,8 +143,10 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
         print('KeyError exception: ', keyerror)
     except IndexError as indexerror:
         print('IndexError exception: ', indexerror)
+    except binascii.Error as b64error:
+        print('base64 decoding exception:', b64error)
     except zlib.error as error:
-        print('zlib exception: ', error)
+        print('zlib decompressing exception: ', error)
     # Some console environments like Windows may encounter this unicode display as a limitation of OS
     except UnicodeEncodeError as encodeerror:
         print("UnicodeEncodeError exception. Cannot decode unicode character for %s in this enviroment: " %
