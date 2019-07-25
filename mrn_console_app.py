@@ -28,7 +28,6 @@ app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
 mrn_domain = 'NewsTextAnalytics'
 mrn_item = 'MRN_STORY'
-#mrn_item = 'MRN_TRNA'
 
 # Global Variables
 web_socket_app = None
@@ -66,8 +65,6 @@ def processRefresh(ws, message_json):
 
 
 def processMRNUpdate(ws, message_json):  # process incoming News Update messages
-    #print("RECEIVED: Update Message")
-    # print(message_json)
 
     fields_data = message_json["Fields"]
     # Dump the FieldList first (for informational purposes)
@@ -88,8 +85,6 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
         #print("FRAG_NUM = %d" % frag_num)
         #print("MRN_SRC = %s" % mrn_src)
 
-        #fragment_decoded = base64.b64decode(fragment)
-
         if frag_num > 1:  # We are now processing more than one part of an envelope - retrieve the current details
             guid_index = next((index for (index, d) in enumerate(
                 _news_envelopes) if d["guid"] == guid), None)
@@ -100,7 +95,7 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
 
                 #print("fragment before merge = %d" % len(envelop["data"]["fragment"]))
 
-                # Merge incoming data to existing envelop and getting FRAGMENT and TOT_SIZE data to local variables
+                # Merge incoming data to existing news envelop and getting FRAGMENT and TOT_SIZE data to local variables
                 fragment = envelop["data"]["fragment"] = envelop["data"]["fragment"] + fragment
                 envelop["data"]["frag_num"] = frag_num
                 tot_size = envelop["data"]["tot_size"]
@@ -110,7 +105,7 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
                 # The multiple fragments news are not completed, waiting.
                 if tot_size != len(fragment):
                     return None
-                # The multiple fragments news are completed, delete assoiclate GUID dictionary
+                # The multiple fragments news are completed, delete assoiclate GUID envelop
                 elif tot_size == len(fragment):
                     del _news_envelopes[guid_index]
             else:
@@ -120,9 +115,10 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
         else:  # FRAG_NUM = 1 The first fragment
             tot_size = int(fields_data["TOT_SIZE"])
             print("FRAGMENT length = %d" % len(fragment))
-            if tot_size != len(fragment):  # Completed News
+            # The fragment news is not completed, waiting and add this news data to envelop object.
+            if tot_size != len(fragment):
                 print("Add new fragments to news envelop for guid %s" % guid)
-                _news_envelopes.append({
+                _news_envelopes.append({  # the envelop object is a Python dictionary with GUID as a key and other fields are data
                     "guid": guid,
                     "data": {
                         "fragment": fragment,
@@ -189,7 +185,6 @@ def process_message(ws, message_json):
 
 def process_login_response(ws, message_json):
     """ Send item request """
-    # send_market_price_request(ws)
     send_mrn_request(ws)
 
 
@@ -257,15 +252,15 @@ if __name__ == "__main__":
     # Get command line parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", [
-                                   "help", "hostname=", "port=", "app_id=", "user=", "position="])
+                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "ric="])
     except getopt.GetoptError:
         print(
-            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--ric news RIC name] [--help]')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
             print(
-                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--help]')
+                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--ric news RIC name] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
@@ -277,6 +272,13 @@ if __name__ == "__main__":
             user = arg
         elif opt in ("--position"):
             position = arg
+        elif opt in ("--ric"):
+            if arg not in ["MRN_STORY", "MRN_TRNA", "MRN_TRNA_DOC", "MRN_TRSI"]:
+                print(
+                    "The supported MRN RIC names are MRN_STORY or MRN_TRNA or MRN_TRNA_DOC or MRN_TRSI only")
+                sys.exit(2)
+            else:
+                item = arg
 
     # Start websocket handshake
     ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
@@ -294,6 +296,6 @@ if __name__ == "__main__":
 
     try:
         while True:
-            time.sleep(600)
+            time.sleep(1)
     except KeyboardInterrupt:
         web_socket_app.close()
