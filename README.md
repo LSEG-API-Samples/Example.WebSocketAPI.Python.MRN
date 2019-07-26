@@ -6,7 +6,7 @@
 
 ## Overview
 
-This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console. The project are implemented with Python language, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
+This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console and . The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
 
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contains special unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode unicode character``` message in a console instead.
 
@@ -41,19 +41,22 @@ This example requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
+5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application)
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.6.5. 
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
 - It is not advisable to change the ADH/ADS configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding TREP-MRN service configuration.
+- You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 
 ## Application Files
 This example project contains the following files and folders
 1. *mrn_console_app.py*: The example application file
-2. *requirements.txt*: The application dependencies configurationf file
-3. LICENSE.md: Project's license file
-4. README.md: Project's README file
+2. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application file
+3. *requirements.txt*: The application dependencies configurationf file
+4. LICENSE.md: Project's license file
+5. README.md: Project's README file
 
 ## How to run this console example
 
