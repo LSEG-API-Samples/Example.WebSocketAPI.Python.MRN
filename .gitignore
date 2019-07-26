@@ -5,3 +5,6 @@ test_result.txt
 
 test_python.py
 mrn_other_example/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
