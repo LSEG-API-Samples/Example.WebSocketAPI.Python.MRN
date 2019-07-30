@@ -41,10 +41,11 @@ This example requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
-5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application)
+5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application only)
+6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running the console example in Docker only)
 
 *Note:* 
-- The Python example has been qualified with Python versions 3.6.5. 
+- The Python example has been qualified with Python versions 3.6.5 and Python 3.7.4 (Docker 19.03.1 - CentOS 7)
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
 - It is not advisable to change the ADH/ADS configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding TREP-MRN service configuration.
@@ -54,6 +55,7 @@ This example requires the following dependencies softwares and libraries.
 This example project contains the following files and folders
 1. *mrn_console_app.py*: The example application file
 2. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application file
+3. *Dockerfile*: The example application Dockerfile
 3. *requirements.txt*: The application dependencies configurationf file
 4. LICENSE.md: Project's license file
 5. README.md: Project's README file
@@ -69,6 +71,18 @@ Please be informed that your TREP server (ADS and ADH) should have a Service tha
     $> python mrn_console_app.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
 Optionally, the application subscribes ```MRN_STORY``` RIC code from TREP by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
+
+## How to run this console example in Docker
+
+1. Unzip or download the example project folder into a directory of your choice. 
+2. Run ```$> docker build -t <project tag name> .``` in a console to build an image from a Dockerfile.
+    ```
+    $> docker build -t esdk_ws_mrn_python .
+    ```
+3. Once the build is success, you can create and run the container with the following command
+    ```
+    $> docker run esdk_ws_mrn_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
+    ```
 
 ## Example Results
 ### Send MRN_STORY request to TREP
