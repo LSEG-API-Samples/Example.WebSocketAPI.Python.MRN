@@ -6,7 +6,7 @@
 
 ## Overview
 
-This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console and . The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
+This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
 
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contains special unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode unicode character``` message in a console instead.
 
@@ -41,15 +41,15 @@ This example requires the following dependencies softwares and libraries.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
-5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example application only)
-6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running the console example in Docker only)
+5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example only)
+6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running a console example in Docker only)
 
 *Note:* 
 - The Python example has been qualified with Python versions 3.6.5 and Python 3.7.4 (Docker 19.03.1 - CentOS 7)
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
 - It is not advisable to change the ADH/ADS configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding TREP-MRN service configuration.
-- You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
+
 
 ## Application Files
 This example project contains the following files and folders
@@ -60,22 +60,22 @@ This example project contains the following files and folders
 4. LICENSE.md: Project's license file
 5. README.md: Project's README file
 
-## How to run this console example
+## How to run this example
 
-Please be informed that your TREP server (ADS and ADH) should have a Service that contain MRN data.
+Please be informed that your TREP server (ADS and ADH) should have a Service that contain MRN data. The first step is unzip or download the example project folder into a directory of your choice, then choose how to run application based on your environment below.
 
-1. Unzip or download the example project folder into a directory of your choice. 
-2. Run ```$> pip install -r requestments.txt``` in a console to install all the dependencies libraries.
+### A console example
+1. Go to project folder in console
+2. Run ```$> pip install -r requestments.txt``` command in a console to install all the dependencies libraries.
 3. Then you can run mrn_console_app.py application with the following command
     ```
     $> python mrn_console_app.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
 Optionally, the application subscribes ```MRN_STORY``` RIC code from TREP by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
 
-## How to run this console example in Docker
-
-1. Unzip or download the example project folder into a directory of your choice. 
-2. Run ```$> docker build -t <project tag name> .``` in a console to build an image from a Dockerfile.
+### Docker example
+1. Go to project folder in console 
+2. Run ```$> docker build -t <project tag name> .``` command in a console to build an image from a Dockerfile.
     ```
     $> docker build -t esdk_ws_mrn_python .
     ```
@@ -83,6 +83,16 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code from TREP by def
     ```
     $> docker run esdk_ws_mrn_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
+### Classic Jupyter Notebook example
+1. Go to project's notebook folder in console 
+2. Run the following command in a console to start classic Jupyter Notebook in the notebook folder.
+  ```
+  $> jupyter notebook
+  ```
+3. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
+
+*Note:* 
+- You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 
 ## Example Results
 ### Send MRN_STORY request to TREP
@@ -182,6 +192,7 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 * [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.refinitiv.com/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
 * [Introduction to Machine Readable News (MRN) with Elektron Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
 * [MRN Data Models and Elektron Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
-* [Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
+* [MRN WebSocket JavaScript example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
+* [MRN WebSocket C# NewsViewer example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.CSharp.MRNWebSocketViewer).
 
 For any question related to this example or Elektron WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
