@@ -30,12 +30,15 @@ The data goes through the following series of transformations:
 3. The compressed JSON is split into a number of fragments (BUFFER or Base64 ascii string) which each fit into a single update message
 4. The data fragments are added to an update message as the FRAGMENT field value in a FieldList envelope
 
+![Figure-1](diagram/mrn_process.png "MRN data compression process") 
+
 Therefore, in order to parse the core content data, the application will need to reverse this process. The WebSocket application also need to convert a received Base64 string in a FRAGMENT field to bytes data before further process this field. This application uses Python [base64](https://docs.python.org/3/library/base64.html) and [zlib](https://docs.python.org/3/library/zlib.html) modules to decode Base64 string and decompress JSON string. 
 
 If you are not familiar with MRN concept, please visit the following resources which will give you a full explanation of the MRN data model and implementation logic:
 * [Webinar Recording: Introduction to Machine Readable News](https://developers.refinitiv.com/news#news-accordion-nid-12045)
 * [Introduction to Machine Readable News (MRN) with Elektron Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
 * [MRN Data Models and Elektron Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
+* [Introduction to Machine Readable News with Elektron WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
 ## Prerequisite
 This example requires the following dependencies softwares and libraries.
