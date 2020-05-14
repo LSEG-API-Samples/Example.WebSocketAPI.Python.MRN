@@ -19,11 +19,16 @@ import threading
 from threading import Thread, Event
 import base64
 import zlib
+import requests
 
 # Global Default Variables
-hostname = '127.0.0.1'
-port = '15000'
-user = 'root'
+token_api_endpoint = 'https://api.refinitiv.com/auth/oauth2/v1/token'
+token = ''
+hostname = 'apac-3.pricing.streaming.edp.thomsonreuters.com'
+port = '443'
+user = ''
+password = ''
+client_id = ''
 app_id = '256'
 position = socket.gethostbyname(socket.gethostname())
 mrn_domain = 'NewsTextAnalytics'
@@ -35,8 +40,34 @@ web_socket_open = False
 
 _news_envelopes = []
 
-''' MRN Process Code '''
+''' EDP Login '''
+def get_token():
+    print('Retrieve Token')
+    data = {
+        'client_id': client_id,
+        'grant_type': 'password',
+        'password': password,
+        'scope': 'trapi',
+        'takeExclusiveSignOnControl': True,
+        'username': user,
+    }
+    #print(data)
+    r = requests.post(token_api_endpoint,
+        data=data,
+        verify=True)
+    auth_json = r.json()
+    #print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
+    response = {
+        'token': '',
+        'error': ''
+    }
+    if ('access_token' in auth_json):
+        response['token'] = auth_json['access_token']
+    else:
+        response['error'] = auth_json['error_description']
+    return response
 
+''' MRN Process Code '''
 
 def decodeFieldList(fieldList_dict):
     for key, value in fieldList_dict.items():
@@ -194,17 +225,18 @@ def send_login_request(ws):
         'ID': 1,
         "Domain": 'Login',
         'Key': {
-            'Name': '',
+            #'Name': '',
             'Elements': {
                 'ApplicationId': '',
                 'Position': ''
-            }
+            },
+            'NameType': 'AuthnToken'
         }
     }
 
-    login_json['Key']['Name'] = user
     login_json['Key']['Elements']['ApplicationId'] = app_id
     login_json['Key']['Elements']['Position'] = position
+    login_json['Key']['Elements']['AuthenticationToken'] = token
 
     ws.send(json.dumps(login_json))
     print("SENT:")
@@ -252,15 +284,15 @@ if __name__ == "__main__":
     # Get command line parameters
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", [
-                                   "help", "hostname=", "port=", "app_id=", "user=", "position=", "ric="])
+                                   "help", "hostname=", "port=", "client_id=", "user=", "password=", "position=", "ric="])
     except getopt.GetoptError:
         print(
-            'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--ric news RIC name] [--help]')
+            'Usage: mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
             print(
-                'Usage: market_price.py [--hostname hostname] [--port port] [--app_id app_id] [--user user] [--position position] [--ric news RIC name] [--help]')
+                'Usage: mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
@@ -268,8 +300,12 @@ if __name__ == "__main__":
             port = arg
         elif opt in ("--app_id"):
             app_id = arg
+        elif opt in ("--client_id"):
+            client_id = arg
         elif opt in ("--user"):
             user = arg
+        elif opt in ("--password"):
+            password = arg
         elif opt in ("--position"):
             position = arg
         elif opt in ("--ric"):
@@ -280,8 +316,22 @@ if __name__ == "__main__":
             else:
                 item = arg
 
+    if user == '' or password == '' or client_id == '':
+        print('Username, password, and client_id are required!')
+        sys.exit(2)
+    
+    # Get token
+    token_result = get_token()
+    if (token_result['token'] != ''):
+        # Success
+        token = token_result['token']
+    else:
+        # Failed
+        print(token_result['error'])
+        sys.exit(2)
+    
     # Start websocket handshake
-    ws_address = "ws://{}:{}/WebSocket".format(hostname, port)
+    ws_address = "wss://{}:{}/WebSocket".format(hostname, port)
     print("Connecting to WebSocket " + ws_address + " ...")
     web_socket_app = websocket.WebSocketApp(ws_address, header=['User-Agent: Python'],
                                             on_message=on_message,
