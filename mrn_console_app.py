@@ -24,6 +24,7 @@ import requests
 # Global Default Variables
 token_api_endpoint = 'https://api.refinitiv.com/auth/oauth2/v1/token'
 token = ''
+token_refresh = ''
 hostname = 'apac-3.pricing.streaming.edp.thomsonreuters.com'
 port = '443'
 user = ''
@@ -37,6 +38,7 @@ mrn_item = 'MRN_STORY'
 # Global Variables
 web_socket_app = None
 web_socket_open = False
+counter = 1
 
 _news_envelopes = []
 
@@ -59,13 +61,33 @@ def get_token():
     #print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
     response = {
         'token': '',
-        'error': ''
+        'error': '',
+        'refresh': ''
     }
     if ('access_token' in auth_json):
         response['token'] = auth_json['access_token']
+        response['refresh'] = auth_json['refresh_token']
     else:
         response['error'] = auth_json['error_description']
     return response
+
+def refresh_token(refresh):
+    print('Refresh Token')
+    print(refresh)
+    refresh = refresh.encode('ascii')
+    
+    data = {
+        'client_id': client_id,
+        'grant_type': 'refresh_token',
+        'refresh_token': refresh,
+        'username': user,
+    }
+    #print(data)
+    r = requests.post(token_api_endpoint,
+        data=data,
+        verify=True)
+    auth_json = r.json()
+    print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
 
 ''' MRN Process Code '''
 
@@ -219,7 +241,7 @@ def process_login_response(ws, message_json):
     send_mrn_request(ws)
 
 
-def send_login_request(ws):
+def send_login_request(ws, refresh):
     """ Generate a login request from command line data (or defaults) and send """
     login_json = {
         'ID': 1,
@@ -234,9 +256,12 @@ def send_login_request(ws):
         }
     }
 
-    login_json['Key']['Elements']['ApplicationId'] = app_id
+    login_json['Key']['Elements']['ApplicationId'] = client_id
     login_json['Key']['Elements']['Position'] = position
     login_json['Key']['Elements']['AuthenticationToken'] = token
+
+    if (refresh == True):
+        login_json['Refresh'] = False
 
     ws.send(json.dumps(login_json))
     print("SENT:")
@@ -274,7 +299,11 @@ def on_open(ws):
     print("WebSocket successfully connected!")
     global web_socket_open
     web_socket_open = True
-    send_login_request(ws)
+    send_login_request(ws, False)
+
+def refresh_login(ws, refresh):
+    refresh_token(refresh)
+    send_login_request(ws, True)
 
 
 ''' Main Process Code '''
@@ -325,6 +354,7 @@ if __name__ == "__main__":
     if (token_result['token'] != ''):
         # Success
         token = token_result['token']
+        token_refresh = token_result['refresh']
     else:
         # Failed
         print(token_result['error'])
@@ -347,5 +377,9 @@ if __name__ == "__main__":
     try:
         while True:
             time.sleep(1)
+            counter = counter + 1
+            print(counter)
+            if (counter % 250 == 0):
+                refresh_login(web_socket_app, token_refresh)
     except KeyboardInterrupt:
         web_socket_app.close()
