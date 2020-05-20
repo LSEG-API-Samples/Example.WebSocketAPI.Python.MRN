@@ -88,6 +88,17 @@ def refresh_token(refresh):
         verify=True)
     auth_json = r.json()
     print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
+    response = {
+        'token': '',
+        'error': '',
+        'refresh': ''
+    }
+    if ('access_token' in auth_json):
+        response['token'] = auth_json['access_token']
+        response['refresh'] = auth_json['refresh_token']
+    else:
+        response['error'] = auth_json['error_description']
+    return response
 
 ''' MRN Process Code '''
 
@@ -302,7 +313,18 @@ def on_open(ws):
     send_login_request(ws, False)
 
 def refresh_login(ws, refresh):
-    refresh_token(refresh)
+    # Get token
+    token_result = refresh_token(refresh)
+    if (token_result['token'] != ''):
+        # Success
+        global token    
+        token = token_result['token']
+        global token_refresh
+        token_refresh = token_result['refresh']
+    else:
+        # Failed
+        print(token_result['error'])
+        sys.exit(2)
     send_login_request(ws, True)
 
 
@@ -378,7 +400,6 @@ if __name__ == "__main__":
         while True:
             time.sleep(1)
             counter = counter + 1
-            print(counter)
             if (counter % 250 == 0):
                 refresh_login(web_socket_app, token_refresh)
     except KeyboardInterrupt:
