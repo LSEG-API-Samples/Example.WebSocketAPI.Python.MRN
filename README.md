@@ -73,7 +73,7 @@ Please be informed that you need EDP credentials with MRN Service entitled. The 
 
 ### A console example
 1. Go to project folder in console
-2. Run ```$> pip install -r requestments.txt``` command in a console to install all the dependencies libraries.
+2. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
 3. Then you can run mrn_console_app.py application with the following command
     ```
     $> python mrn_console_app.py --hostname <EDP WebSocket Hostname> --port <WebSocket Port> --client_id <EDP Client ID> --user <EDP Username> --password <EDP Password> --ric <MRN RIC name>
