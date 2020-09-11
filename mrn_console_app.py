@@ -365,7 +365,7 @@ if __name__ == "__main__":
                     "The supported MRN RIC names are MRN_STORY or MRN_TRNA or MRN_TRNA_DOC or MRN_TRSI only")
                 sys.exit(2)
             else:
-                item = arg
+                mrn_item = arg
 
     if user == '' or password == '' or client_id == '':
         print('Username, password, and client_id are required!')
