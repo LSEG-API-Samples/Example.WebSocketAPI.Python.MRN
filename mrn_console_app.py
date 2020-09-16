@@ -38,7 +38,8 @@ mrn_item = 'MRN_STORY'
 # Global Variables
 web_socket_app = None
 web_socket_open = False
-counter = 1
+counter = 0
+sleep_for_seconds = 10
 
 _news_envelopes = []
 
@@ -58,7 +59,8 @@ def get_token():
         data=data,
         verify=True)
     auth_json = r.json()
-    #print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
+    print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
+    sys.stdout.flush()
     response = {
         'token': '',
         'error': '',
@@ -72,8 +74,7 @@ def get_token():
     return response
 
 def refresh_token(refresh):
-    print('Refresh Token')
-    print(refresh)
+    print('Refresh Token: ' + refresh)
     refresh = refresh.encode('ascii')
     
     data = {
@@ -87,7 +88,7 @@ def refresh_token(refresh):
         data=data,
         verify=True)
     auth_json = r.json()
-    print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
+    #print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
     response = {
         'token': '',
         'error': '',
@@ -198,6 +199,7 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
             print("decompress News FRAGMENT(s) for GUID  %s" % guid)
             decompressed_data = zlib.decompress(fragment, zlib.MAX_WBITS | 32)
             print("News = %s" % json.loads(decompressed_data))
+            sys.stdout.flush()
 
     except KeyError as keyerror:
         print('KeyError exception: ', keyerror)
@@ -218,7 +220,6 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
 def processStatus(ws, message_json):  # process incoming status message
     print("RECEIVED: Status Message")
     print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
-
 
 ''' JSON-OMM Process functions '''
 
@@ -287,6 +288,7 @@ def on_message(ws, message):
     print("RECEIVED: ")
     message_json = json.loads(message)
     print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
+    sys.stdout.flush()
 
     for singleMsg in message_json:
         process_message(ws, singleMsg)
@@ -312,12 +314,16 @@ def on_open(ws):
     web_socket_open = True
     send_login_request(ws, False)
 
-def refresh_login(ws, refresh):
+def login(ws, refresh):
     # Get token
-    token_result = refresh_token(refresh)
+    if refresh != None:
+        token_result = refresh_token(refresh)
+    else:
+        token_result = get_token()
+
     if (token_result['token'] != ''):
         # Success
-        global token    
+        global token
         token = token_result['token']
         global token_refresh
         token_refresh = token_result['refresh']
@@ -325,8 +331,25 @@ def refresh_login(ws, refresh):
         # Failed
         print(token_result['error'])
         sys.exit(2)
-    send_login_request(ws, True)
+    
+    if (ws != None):
+        send_login_request(ws, True)
 
+def create_socket(address):
+    login(None, None)
+    # Start websocket handshake
+    print("Connecting to WebSocket " + address + " ...")
+    web_socket_app = websocket.WebSocketApp(address, header=['User-Agent: Python'],
+                                            on_message=on_message,
+                                            on_error=on_error,
+                                            on_close=on_close,
+                                            subprotocols=['tr_json2'])
+    web_socket_app.on_open = on_open
+
+    # Event loop
+    wst = threading.Thread(target=web_socket_app.run_forever)
+    wst.start()
+    return web_socket_app
 
 ''' Main Process Code '''
 
@@ -371,36 +394,24 @@ if __name__ == "__main__":
         print('Username, password, and client_id are required!')
         sys.exit(2)
     
-    # Get token
-    token_result = get_token()
-    if (token_result['token'] != ''):
-        # Success
-        token = token_result['token']
-        token_refresh = token_result['refresh']
-    else:
-        # Failed
-        print(token_result['error'])
-        sys.exit(2)
-    
-    # Start websocket handshake
     ws_address = "wss://{}:{}/WebSocket".format(hostname, port)
-    print("Connecting to WebSocket " + ws_address + " ...")
-    web_socket_app = websocket.WebSocketApp(ws_address, header=['User-Agent: Python'],
-                                            on_message=on_message,
-                                            on_error=on_error,
-                                            on_close=on_close,
-                                            subprotocols=['tr_json2'])
-    web_socket_app.on_open = on_open
-
-    # Event loop
-    wst = threading.Thread(target=web_socket_app.run_forever)
-    wst.start()
 
     try:
+        web_socket_app = create_socket(ws_address)
+        time.sleep(10)
+
         while True:
-            time.sleep(1)
-            counter = counter + 1
-            if (counter % 250 == 0):
-                refresh_login(web_socket_app, token_refresh)
+            if web_socket_open == True:
+                # When connection is opened, check for token refresh
+                time.sleep(sleep_for_seconds)
+                counter = counter + sleep_for_seconds
+                #print('Counter', counter)
+                #sys.stdout.flush()
+                if (counter % 250 == 0):
+                    login(web_socket_app, token_refresh)
+            else:
+                # When connection is closed, reconnect
+                counter = 0
+                web_socket_app = create_socket(ws_address)
     except KeyboardInterrupt:
         web_socket_app.close()
