@@ -1,26 +1,32 @@
-# Elektron WebSocket API MRN Example with Python
-- Last update: July 2019
+# WebSocket API Machine Readable News Example with Python
+- Last update: September 2020
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: ADS and ADH servers version 3.2.1 and above, MRN service
 
 ## Overview
 
-This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
+This example shows how to writing the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/elektron/websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Distribution System (ADH and ADS servers). The example just connects to Refinitiv Real-Time via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
 
 Please see a full documentation of this example application in [this article](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contains special unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode unicode character``` message in a console instead.
+
+## Prerequisite
+
+This example is focusing on the Refinitiv Machine Readable News (MRN) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. 
+
+The Tutorials page provide a step by step guide (connect, login, request data, parse data, etc) for developers who interested in developing a WebSocket application to consume real-time data from Refinitiv Real-Time. 
 
 ## Machine Readable News Overview
 
 Refinitiv Machine Readable News (MRN) is an advanced service for automating the consumption and systematic analysis of news. It delivers deep historical news archives, ultra-low latency structured news and news analytics directly to your applications. This enables algorithms to exploit the power of news to seize opportunities, capitalize on market inefficiencies and manage event risk.
 
 ### MRN Data model
-MRN is published over Elektron using an Open Message Model (OMM) envelope in News Text Analytics domain messages. The Real-time News content set is made available over MRN_STORY RIC. The content data is contained in a FRAGMENT field that has been compressed, and potentially fragmented across multiple messages, in order to reduce bandwidth and message size.
+MRN is published over Refinitiv Real-Time using an Open Message Model (OMM) envelope in News Text Analytics domain messages. The Real-time News content set is made available over MRN_STORY RIC. The content data is contained in a FRAGMENT field that has been compressed, and potentially fragmented across multiple messages, in order to reduce bandwidth and message size.
 
 A FRAGMENT field has a different data type based on a connection type:
-* RSSL connection (ESDK [C++](https://developers.refinitiv.com/elektron/elektron-sdk-cc)/[Java](https://developers.refinitiv.com/elektron/elektron-sdk-java)): BUFFER type
+* RSSL connection (RTSDK [C++](https://developers.refinitiv.com/elektron/elektron-sdk-cc)/[Java](https://developers.refinitiv.com/elektron/elektron-sdk-java)): BUFFER type
 * WebSocket connection: Base64 ascii string
 
 The data goes through the following series of transformations:
@@ -36,13 +42,13 @@ Therefore, in order to parse the core content data, the application will need to
 
 If you are not familiar with MRN concept, please visit the following resources which will give you a full explanation of the MRN data model and implementation logic:
 * [Webinar Recording: Introduction to Machine Readable News](https://developers.refinitiv.com/news#news-accordion-nid-12045)
-* [Introduction to Machine Readable News (MRN) with Elektron Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
-* [MRN Data Models and Elektron Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
-* [Introduction to Machine Readable News with Elektron WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
+* [Introduction to Machine Readable News (MRN) with Enterprise Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
+* [MRN Data Models and Refinitiv Real-Time SDK Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
+* [Introduction to Machine Readable News with WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
-## Prerequisite
+## Example Prerequisite
 This example requires the following dependencies softwares and libraries.
-1. TREP server (both ADS and ADH) 3.2.x with WebSocket connection and MRN Service.
+1. ADH and ADS servers version 3.2.x with WebSocket connection and MRN Service.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
@@ -53,7 +59,7 @@ This example requires the following dependencies softwares and libraries.
 - The Python example has been qualified with Python versions 3.6.5 and Python 3.7.4 (Docker 19.03.1 - CentOS 7)
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
-- It is not advisable to change the ADH/ADS configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding TREP-MRN service configuration.
+- It is not advisable to change the ADH/ADS configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding ADS/ADH-MRN service configuration.
 
 
 ## Application Files
@@ -67,7 +73,7 @@ This example project contains the following files and folders
 
 ## How to run this example
 
-Please be informed that your TREP server (ADS and ADH) should have a Service that contain MRN data. The first step is unzip or download the example project folder into a directory of your choice, then choose how to run application based on your environment below.
+Please be informed that your ADS/ADH server  should have a Service that contain MRN data. The first step is unzip or download the example project folder into a directory of your choice, then choose how to run application based on your environment below.
 
 ### A console example
 1. Go to project folder in console
@@ -76,7 +82,7 @@ Please be informed that your TREP server (ADS and ADH) should have a Service tha
     ```
     $> python mrn_console_app.py --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
-Optionally, the application subscribes ```MRN_STORY``` RIC code from TREP by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
+Optionally, the application subscribes ```MRN_STORY``` RIC code from ADS by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
 
 ### Docker example
 1. Go to project folder in console 
@@ -89,18 +95,38 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code from TREP by def
     $> docker run esdk_ws_mrn_python --hostname <ADS server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
 ### Classic Jupyter Notebook example
-1. Go to project's notebook folder in console 
-2. Run the following command in a console to start classic Jupyter Notebook in the notebook folder.
+
+Please be informed that  Python [Ananconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommend for running Jupyter Notebook example.
+
+1. Open Anaconda Prompt and go to project's folder
+2. Run the following command in a Anaconda Prompt to create Conda environment named *mrn_python_notebook* for the project.
   ```
-  $> jupyter notebook
+  (base) $>conda create --name mrn_python_notebook python=3.7
   ```
-3. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
+3. Once the environment is created, activate Conda environment named ```global_sale``` with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate mrn_python_notebook
+  ```
+4. In mrn_python_notebook environment, install the following prerequisite libraries
+  ```
+  (mrn_python_notebook) $>conda install -c conda-forge notebook
+
+  (mrn_python_notebook) $>conda install -c conda-forge pandas
+
+  (mrn_python_notebook) $>pip install -r requestments.txt
+  ```
+5. Go to project's notebook folder in console 
+6. Run the following command in a console to start classic Jupyter Notebook in the notebook folder.
+  ```
+  (mrn_python_notebook) $>jupyter notebook
+  ```
+7. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
 
 *Note:* 
 - You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 
 ## Example Results
-### Send MRN_STORY request to TREP
+### Send MRN_STORY request to ADS
 ```
 SENT:
 {
@@ -191,14 +217,14 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 ```
 
 ## References
-* [Refinitiv Elektron SDK Family page](https://developers.refinitiv.com/elektron) on the [Refinitiv Developer Community](https://developers.thomsonreuters.com/) web site.
-* [Refinitiv Elektron WebSocket API page](https://developers.refinitiv.com/websocket-api).
+* [Refinitiv Real-Time SDK Family page](https://developers.refinitiv.com/elektron) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
+* [WebSocket API page](https://developers.refinitiv.com/websocket-api).
 * [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
-* [Introduction to Machine Readable News with Elektron WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
+* [Introduction to Machine Readable News with WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 * [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.refinitiv.com/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
-* [Introduction to Machine Readable News (MRN) with Elektron Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
-* [MRN Data Models and Elektron Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
+* [Introduction to Machine Readable News (MRN) with Enterprise Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
+* [MRN Data Models and Real-Time SDK Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
 * [MRN WebSocket JavaScript example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
 * [MRN WebSocket C# NewsViewer example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.CSharp.MRNWebSocketViewer).
 
-For any question related to this example or Elektron WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
+For any question related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
