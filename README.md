@@ -6,13 +6,9 @@
 
 ## Overview
 
-<<<<<<< HEAD
 This example shows how to writing the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/elektron/websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Distribution System (ADH and ADS servers). The example just connects to Refinitiv Real-Time via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
-=======
-This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from Thomson Reuters Enterprise Platform (TREP). The example just connects to TREP via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
 
-For example of MRN from Elektron Real-Time (ERT) in Cloud, please switch to ERT-in-Cloud branch.
->>>>>>> 0dea41bf1efe2fb8555f4a752696d024f19787f1
+For example of MRN from Refinitiv Real-Time Optimized (formerly known as ERT in Cloud), please switch to [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch.
 
 Please see a full documentation of this example application in [this article](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
