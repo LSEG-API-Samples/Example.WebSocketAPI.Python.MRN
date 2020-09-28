@@ -1,8 +1,8 @@
 # Elektron WebSocket API MRN Example with Python
-- Last update: May 2020
+- Last update: September 2020
 - Environment: Windows and Linux OS 
 - Compiler: Python
-- Prerequisite: EDP Credentials with MRN service
+- Prerequisite: RDP Credentials with MRN service
 
 ## Overview
 
@@ -44,7 +44,7 @@ If you are not familiar with MRN concept, please visit the following resources w
 
 ## Prerequisite
 This example requires the following dependencies softwares and libraries.
-1. EDP Credentials with MRN Service.
+1. RDP Credentials with MRN Service.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
@@ -55,13 +55,13 @@ This example requires the following dependencies softwares and libraries.
 - The Python example has been qualified with Python versions 3.6.5 and Python 3.7.4 (Docker 19.03.1 - CentOS 7)
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
-- It is not advisable to change the EDP configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding EDP MRN service configuration.
+- It is not advisable to change the RDP configuration, if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding RDP MRN service configuration.
 
 
 ## Application Files
 This example project contains the following files and folders
-1. *mrn_console_app.py*: The example application file
-2. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application file
+1. *cloud_mrn_console_app.py*: The example application file
+2. *notebook_python/cloud_mrn_notebook_app.ipynb*: The example Jupyter Notebook application file
 3. *Dockerfile*: The example application Dockerfile
 3. *requirements.txt*: The application dependencies configurationf file
 4. LICENSE.md: Project's license file
@@ -69,14 +69,14 @@ This example project contains the following files and folders
 
 ## How to run this example
 
-Please be informed that you need EDP credentials with MRN Service entitled. The first step is unzip or download the example project folder into a directory of your choice, then choose how to run application based on your environment below.
+Please be informed that you need RDP credentials with MRN Service entitled. The first step is unzip or download the example project folder into a directory of your choice, then choose how to run application based on your environment below.
 
 ### A console example
 1. Go to project folder in console
 2. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
-3. Then you can run mrn_console_app.py application with the following command
+3. Then you can run cloud_mrn_console_app.py application with the following command
     ```
-    $> python mrn_console_app.py --hostname <EDP WebSocket Hostname> --port <WebSocket Port> --client_id <EDP Client ID> --user <EDP Username> --password <EDP Password> --ric <MRN RIC name>
+    $> python cloud_mrn_console_app.py --hostname <RDP WebSocket Hostname> --port <WebSocket Port> --client_id <RDP Client ID> --user <RDP Username> --password <RDP Password> --ric <MRN RIC name>
     ```
 Optionally, the application subscribes ```MRN_STORY``` RIC code MRN by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
 
@@ -96,9 +96,10 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code MRN by default. 
   ```
   $> jupyter notebook
   ```
-3. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
+3. Open *cloud_mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
 
 *Note:* 
+- Application will automatically refresh RDP token and reconnect to the WebSocket endpoint when disconnected.
 - You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environment such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 
 ## Example Results
