@@ -8,3 +8,7 @@ mrn_other_example/
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+notebook/mrn_realtime_news_notebook_app.ipynb
+notebook/mrn_trna_notebook_app.ipynb
+notebook/images/trna_process.png
+notebook/images/trna_process_assemble.png
