@@ -75,7 +75,7 @@ def processMRNUpdate(ws, message_json):  # process incoming News Update messages
     guid = None
 
     try:
-        # Get data for all requried fields
+        # Get data for all required fields
         fragment = base64.b64decode(fields_data["FRAGMENT"])
         frag_num = int(fields_data["FRAG_NUM"])
         guid = fields_data["GUID"]
