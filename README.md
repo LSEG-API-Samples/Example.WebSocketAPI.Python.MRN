@@ -51,8 +51,7 @@ If you are not familiar with MRN concept, please visit the following resources w
 
 ## Example Prerequisite
 This example requires the following dependencies software and libraries.
-1. Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution
-Server version 3.2.x with WebSocket connection and MRN Service.
+1. Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server version 3.2.x with WebSocket connection and MRN Service.
 2. [Python](https://www.python.org/) compiler and runtime
 3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
 4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
