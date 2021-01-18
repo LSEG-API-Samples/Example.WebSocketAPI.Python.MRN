@@ -25,7 +25,7 @@ import requests
 token_api_endpoint = 'https://api.refinitiv.com/auth/oauth2/v1/token'
 token = ''
 token_refresh = ''
-hostname = 'apac-3.pricing.streaming.edp.thomsonreuters.com'
+hostname = 'apac-1-t3.streaming-pricing-api.refinitiv.com'
 port = '443'
 user = ''
 password = ''
