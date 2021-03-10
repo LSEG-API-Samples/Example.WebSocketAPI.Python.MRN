@@ -361,12 +361,12 @@ if __name__ == "__main__":
                                    "help", "hostname=", "port=", "client_id=", "user=", "password=", "position=", "ric="])
     except getopt.GetoptError:
         print(
-            'Usage: mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
+            'Usage: cloud_mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
         sys.exit(2)
     for opt, arg in opts:
         if opt in ("--help"):
             print(
-                'Usage: mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
+                'Usage: cloud_mrn_console_app.py [--hostname hostname] [--port port] [--client_id client_id] [--user user] [--password password] [--position position] [--ric news RIC name] [--help]')
             sys.exit(0)
         elif opt in ("--hostname"):
             hostname = arg
