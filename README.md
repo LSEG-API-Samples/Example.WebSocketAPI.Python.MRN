@@ -1,12 +1,12 @@
 # WebSocket API Machine Readable News Example with Python
-- Last update: Jan 2021
+- Last update: May 2021
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution servers version 3.2.1 and above, MRN service
 
 ## Overview
 
-This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Distribution System (Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server). The example just connects to Refinitiv Real-Time via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
+This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Distribution System (Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server). The example just connects to Refinitiv Real-Time via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
 
 For example of MRN from Refinitiv Real-Time Optimized (formerly known as ERT in Cloud), please switch to [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch.
 
@@ -16,7 +16,7 @@ Please see the full documentation of this example application in [this article](
 
 ## Prerequisite
 
-This example is focusing on the Refinitiv Machine Readable News (MRN) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. 
+This example is focusing on the Refinitiv Machine Readable News (MRN) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. 
 
 The Tutorials page provides a step-by-step guide (connect, log in, request data, parse data, etc) for developers who are interested in developing a WebSocket application to consume real-time data from Refinitiv Real-Time. 
 
@@ -29,7 +29,7 @@ Refinitiv Machine Readable News (MRN) is an advanced service for automating the 
 MRN is published over Refinitiv Real-Time using an Open Message Model (OMM) envelope in News Text Analytics domain messages. The Real-time News content set is made available over MRN_STORY RIC. The content data is contained in a FRAGMENT field that has been compressed and potentially fragmented across multiple messages, to reduce bandwidth and message size.
 
 A FRAGMENT field has a different data type based on a connection type:
-* RSSL connection (RTSDK [C++](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-cc)/[Java](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java)): BUFFER type
+* RSSL connection (RTSDK [C++](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-cc)/[Java](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java)): BUFFER type
 * WebSocket connection: Base64 ASCII string
 
 The data goes through the following series of transformations:
@@ -80,7 +80,7 @@ Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv
 
 ### A console example
 1. Go to the project folder in the console
-2. Run ```$> pip install -r requestments.txt``` command in a console to install all the dependencies libraries.
+2. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
 3. Then you can run mrn_console_app.py application with the following command
     ```
     $> python mrn_console_app.py --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
@@ -97,16 +97,18 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code from Real-Time A
     ```
     $> docker run rtsdk_ws_mrn_python --hostname Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
+4. If you want to connect the Docker container to a localhost, please use ```host.docker.internal``` as the Host name. 
+
 ### Classic Jupyter Notebook example
 
-Please be informed that  Python [Ananconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the Jupyter Notebook example.
+Please be informed that  Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the Jupyter Notebook example.
 
 1. Open Anaconda Prompt and go to the project's folder
 2. Run the following command in an Anaconda Prompt to create a Conda environment named *mrn_python_notebook* for the project.
   ```
   (base) $>conda create --name mrn_python_notebook python=3.7
   ```
-3. Once the environment is created, activate Conda environment named ```global_sale``` with this command in Anaconda Prompt
+3. Once the environment is created, activate Conda environment named ```mrn_python_notebook``` with this command in Anaconda Prompt
   ```
   (base) $>conda activate mrn_python_notebook
   ```
@@ -116,7 +118,7 @@ Please be informed that  Python [Ananconda](https://www.anaconda.com/distributio
 
   (mrn_python_notebook) $>conda install -c conda-forge pandas
 
-  (mrn_python_notebook) $>pip install -r requestments.txt
+  (mrn_python_notebook) $>pip install -r requirements.txt
   ```
 5. Go to the project's notebook folder in the console 
 6. Run the following command in a console to start the classic Jupyter Notebook in the notebook folder.
@@ -223,7 +225,7 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 
 For further details, please check out the following resources:
 * [Refinitiv Real-Time & Distribution Family page](https://developers.refinitiv.com/en/use-cases-catalog/refinitiv-real-time) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
-* [WebSocket API page](https://developers.refinitiv.com/en/api-catalog/elektron/refinitiv-websocket-api).
+* [WebSocket API page](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api).
 * [Developer Webinar Recording: Introduction to WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
 * [Introduction to Machine Readable News with WebSocket API](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 * [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.refinitiv.com/en/article-catalog/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
