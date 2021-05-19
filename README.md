@@ -1,18 +1,18 @@
-# Elektron WebSocket API MRN Example with Python
-- Last update: September 2020
+# WebSocket API Machine Readable News Example with Python
+- Last update: May 2021
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: RDP Credentials with MRN service
 
 ## Overview
 
-This example shows how to writing the [Elektron WebSocket API](https://developers.refinitiv.com/elektron/websocket-api) application to subscribe Machine Readable News (MRN) from ERT in Cloud. The example just connects to ERT in Cloud via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project are implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
+This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Optimized (formerly known as ERT in Cloud). The example just connects to Refinitiv Real-Time Optimized via a WebSocket connection, then subscribes and display MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
 
-For example of MRN from TREP, please switch to master branch.
+For example of MRN from Refinitiv Real-Time Distribution System (Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server), please switch to [master](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN) branch.
 
-Please see a full documentation of this example application in [this article](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
+Please see the full documentation of this example application in [this article](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
-*Note:* The news message is in UTF-8 JSON string format. Some news messages that contains special unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode unicode character``` message in a console instead.
+*Note:* The news message is in UTF-8 JSON string format. Some news messages that contain special Unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode Unicode character``` message in a console instead.
 
 ## Machine Readable News Overview
 
@@ -194,14 +194,16 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 ```
 
 ## References
-* [Refinitiv Elektron SDK Family page](https://developers.refinitiv.com/elektron) on the [Refinitiv Developer Community](https://developers.thomsonreuters.com/) web site.
-* [Refinitiv Elektron WebSocket API page](https://developers.refinitiv.com/websocket-api).
-* [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
-* [Introduction to Machine Readable News with Elektron WebSocket API](https://developers.refinitiv.com/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
-* [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.refinitiv.com/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
-* [Introduction to Machine Readable News (MRN) with Elektron Message API (EMA)](https://developers.refinitiv.com/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
-* [MRN Data Models and Elektron Implementation Guide](https://developers.refinitiv.com/elektron/elektron-sdk-java/docs?content=8736&type=documentation_item).
+
+For further details, please check out the following resources:
+* [Refinitiv Real-Time & Distribution Family page](https://developers.refinitiv.com/en/use-cases-catalog/refinitiv-real-time) on the [Refinitiv Developer Community](https://developers.refinitiv.com/) web site.
+* [WebSocket API page](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api).
+* [Developer Webinar Recording: Introduction to WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
+* [Introduction to Machine Readable News with WebSocket API](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
+* [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.refinitiv.com/en/article-catalog/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
+* [Introduction to Machine Readable News (MRN) with Enterprise Message API (EMA)](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
+* [MRN Data Models and Real-Time SDK Implementation Guide](https://developers.refinitiv.com/en/api-catalog/elektron/elektron-sdk-java/documentation#mrn-data-models-implementation-guide).
 * [MRN WebSocket JavaScript example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
 * [MRN WebSocket C# NewsViewer example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.CSharp.MRNWebSocketViewer).
 
-For any question related to this example or Elektron WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
+For any question related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
