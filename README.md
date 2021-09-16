@@ -1,5 +1,5 @@
 # WebSocket API Machine Readable News Example with Python
-- Last update: May 2021
+- Last update: September 2021
 - Environment: Windows and Linux OS 
 - Compiler: Python
 - Prerequisite: Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution servers version 3.2.1 and above, MRN service
@@ -59,7 +59,7 @@ This example requires the following dependencies software and libraries.
 6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running a console example in Docker only)
 
 *Note:* 
-- The Python example has been qualified with Python versions 3.6.5 and Python 3.7.4 (Docker 19.03.1 - CentOS 7)
+- The Python example has been qualified with Python versions 3.6.5, Python 3.7.4 and Python 3.8.x (Docker 19.03.1 - CentOS 7)
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 - If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
 - It is not advisable to change the Refinitiv Real-Time Distribution System configuration if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding Refinitiv Real-Time Distribution System-MRN service configuration.
@@ -95,9 +95,10 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code from Real-Time A
     ```
 3. Once the build is a success, you can create and run the container with the following command
     ```
-    $> docker run rtsdk_ws_mrn_python --hostname Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
+    $> docker run --name mrn_console -it rtsdk_ws_mrn_python --hostname Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
 4. If you want to connect the Docker container to a localhost, please use ```host.docker.internal``` as the Host name. 
+5. Press Ctrl+C buttons to stop the application
 
 ### Classic Jupyter Notebook example
 
@@ -106,7 +107,7 @@ Please be informed that  Python [Anaconda](https://www.anaconda.com/distribution
 1. Open Anaconda Prompt and go to the project's folder
 2. Run the following command in an Anaconda Prompt to create a Conda environment named *mrn_python_notebook* for the project.
   ```
-  (base) $>conda create --name mrn_python_notebook python=3.7
+  (base) $>conda create --name mrn_python_notebook python=3.8
   ```
 3. Once the environment is created, activate Conda environment named ```mrn_python_notebook``` with this command in Anaconda Prompt
   ```
