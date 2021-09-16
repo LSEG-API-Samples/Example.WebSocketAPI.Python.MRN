@@ -1,4 +1,4 @@
-#Build stage, using slim based-image because alpine cannot use Pandas and Matplotlib
+#Build stage
 FROM python:3.8.11-slim AS builder
 
 LABEL maintainer="Wasin Waeosri <wasin.waeosri@rifinitiv.com>"
@@ -9,7 +9,7 @@ COPY requirements.txt .
 # install dependencies to the local user directory (eg. /root/.local)
 RUN pip install --user -r requirements.txt
 
-# Run stage, using slim based-image because alpine cannot use Pandas and Matplotlib
+# Run stage
 FROM python:3.8.11-alpine
 WORKDIR /app
 
