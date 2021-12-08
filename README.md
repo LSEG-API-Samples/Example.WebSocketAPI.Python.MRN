@@ -1,18 +1,21 @@
 # WebSocket API Machine Readable News Example with Python
-- Last update: September 2021
+- Last update: December 2021
 - Environment: Windows and Linux OS 
 - Compiler: Python
-- Prerequisite: Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution servers version 3.2.1 and above, MRN service
+- Prerequisite: Refinitiv Real-Time Distribution System version 3.2.1 and above, or Refinitiv Real-Time -- Optimized credentials, and MRN service
 
 ## Overview
 
 This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from Refinitiv Real-Time Distribution System (Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server). The example just connects to Refinitiv Real-Time via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies. 
 
-For example of MRN from Refinitiv Real-Time Optimized (formerly known as ERT in Cloud), please switch to [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch.
-
 Please see the full documentation of this example application in [this article](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contain special Unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode Unicode character``` message in a console instead.
+
+
+**Update (As of December 2021)**: The example now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection.
+* The RTO example is the mrn_console_rto.py console application file.
+* The deployed Refinitiv Real-Time Distribution System (RTDS) examples are mrn_console_app.py console application and mrn_notebook_app.ipynb notebook files.
 
 ## Prerequisite
 
@@ -52,17 +55,18 @@ If you are not familiar with MRN concept, please visit the following resources w
 ## Example Prerequisite
 This example requires the following dependencies software and libraries.
 1. Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server version 3.2.x with WebSocket connection and MRN Service.
-2. [Python](https://www.python.org/) compiler and runtime
-3. Python's [requests 2.x](https://pypi.org/project/requests/) library.
-4. Python's [websocket-client](https://pypi.org/project/websocket-client/) library (*version 0.49 or greater*).
-5. [Classic Jupyter Notebook](https://jupyter.org/) runtime (for the Notebook example only)
+2. [Python](https://www.python.org/) interpreter and runtime
+3. Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager.
+5. [JupyterLab](https://jupyter.org/) runtime (for the Notebook example only)
+5. RTO Access credentials for the RTO example.
+6. Internet connection.
 6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running a console example in Docker only)
 
 *Note:* 
-- The Python example has been qualified with Python versions 3.6.5, Python 3.7.4 and Python 3.8.x (Docker 19.03.1 - CentOS 7)
-- Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
-- If your environment already have a websocket-client library installed, you can use ```pip list``` command to verify a library version, then use ```pip install --upgrade websocket-client``` command to upgrade websocket-client library. 
+- The Python example has been qualified with Python version Python 3.8.x.
 - It is not advisable to change the Refinitiv Real-Time Distribution System configuration if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding Refinitiv Real-Time Distribution System-MRN service configuration.
+- Please contact your Refinitiv's representative to help you to access the RTO account, and services. You can find more detail regarding the RTO access credentials set up from the *Getting Started for Machine ID* section of the [Getting Start with Refinitiv Data Platform article](https://developers.refinitiv.com/en/article-catalog/article/getting-start-with-refinitiv-data-platform) article.
+- Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
 
 
 ## Application Files
