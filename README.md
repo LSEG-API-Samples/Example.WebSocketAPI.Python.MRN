@@ -14,7 +14,7 @@ Please see the full documentation of this example application in [this article](
 
 
 **Update (As of December 2021)**: The example now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection.
-* The RTO example is the mrn_console_rto.py console application file.
+* The RTO console example: Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 * The deployed Refinitiv Real-Time Distribution System (RTDS) examples are mrn_console_app.py console application and mrn_notebook_app.ipynb notebook files.
 
 ## Prerequisite
@@ -71,25 +71,74 @@ This example requires the following dependencies software and libraries.
 
 ## Application Files
 This example project contains the following files and folders
-1. *mrn_console_app.py*: The example application file
-2. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application file
+1. *mrn_console_app.py*: The example console application for the deployed RTDS connection file
+2. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application for the deployed RTDS connection file
 3. *Dockerfile*: The example application Dockerfile
 3. *requirements.txt*: The application dependencies configuration file
 4. LICENSE.md: Project's license file
 5. README.md: Project's README file
 
-## How to run this example
+## <a id="how_to_run"></a>How to run this example
 
-Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server should have a Service that contains MRN data. The first step is to unzip or download the example project folder into a directory of your choice, then choose how to run the application based on your environment below.
+The first step is to unzip or download the example project folder into a directory of your choice, then choose how to run the application based on your environment below.
 
-### A console example
-1. Go to the project folder in the console
-2. Run ```$> pip install -r requirements.txt``` command in a console to install all the dependencies libraries.
+### <a id="how_to_setup"></a>Set Up Environment
+
+It is an advisable to create a dedicate Python environment to run each Python project. You can create a new Conda environment names *MRN_WEBSOCKET* with the following steps
+
+1. Open Anaconda Prompt and go to the project's folder
+2. Run the following command in an Anaconda Prompt to create a Conda environment named *MRN_WEBSOCKET* for the project.
+  ```
+  (base) $>conda create --name MRN_WEBSOCKET python=3.8
+  ```
+3. Once the environment is created, activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate MRN_WEBSOCKET
+  ```
+4. Run the following command to install the dependencies in the *MRN_WEBSOCKET* environment 
+  ```
+  (MRN_WEBSOCKET) $>pip install -r requirements.txt
+  ```
+### <a id="rtds_jupyter"></a>RTDS Jupyter Notebook example
+
+Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server should have a Service that contains MRN data. The Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the JupyterLab example.
+
+1. Open Anaconda Prompt and go to the project's folder
+2. Activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate MRN_WEBSOCKET
+  ```
+3. Run the following command to install the JupyterLab application and pandas in the *MRN_WEBSOCKET* environment 
+  ```
+  (MRN_WEBSOCKET) $>conda install -c conda-forge jupyterlab pandas
+  ```
+4. In the current Anaconda Prompt, go to the project's notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
+  ```
+  (MRN_WEBSOCKET) $>jupyter lab
+  ```
+5. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
+
+### <a id="rtds_console"></a>RTDS Console example
+
+Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server should have a Service that contains MRN data. 
+
+1. Open Anaconda Prompt and go to the project's folder
+2. Activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate MRN_WEBSOCKET
+  ```
 3. Then you can run mrn_console_app.py application with the following command
-    ```
-    $> python mrn_console_app.py --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
-    ```
-Optionally, the application subscribes ```MRN_STORY``` RIC code from Real-Time Advanced Distribution Server by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only. the application 
+  ```
+  (MRN_WEBSOCKET) $> python mrn_console_app.py --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> 
+  ```
+4. The application subscribes to ```MRN_STORNY``` RIC code from Real-Time Advanced Distribution Server by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only.
+
+### <a id="rto_console"></a>RTO console example
+
+Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
+
+Alternatively, the *mrn_trna_console_rto.py* example of the [Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA) also supports the MRN consumer with RTO, but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
+
 
 ### Docker example
 1. Go to the project folder in the console 
@@ -104,36 +153,6 @@ Optionally, the application subscribes ```MRN_STORY``` RIC code from Real-Time A
 4. If you want to connect the Docker container to a localhost, please use ```host.docker.internal``` as the Host name. 
 5. Press Ctrl+C buttons to stop the application
 
-### Classic Jupyter Notebook example
-
-Please be informed that  Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the Jupyter Notebook example.
-
-1. Open Anaconda Prompt and go to the project's folder
-2. Run the following command in an Anaconda Prompt to create a Conda environment named *mrn_python_notebook* for the project.
-  ```
-  (base) $>conda create --name mrn_python_notebook python=3.8
-  ```
-3. Once the environment is created, activate Conda environment named ```mrn_python_notebook``` with this command in Anaconda Prompt
-  ```
-  (base) $>conda activate mrn_python_notebook
-  ```
-4. In mrn_python_notebook environment, install the following prerequisite libraries
-  ```
-  (mrn_python_notebook) $>conda install -c conda-forge notebook
-
-  (mrn_python_notebook) $>conda install -c conda-forge pandas
-
-  (mrn_python_notebook) $>pip install -r requirements.txt
-  ```
-5. Go to the project's notebook folder in the console 
-6. Run the following command in a console to start the classic Jupyter Notebook in the notebook folder.
-  ```
-  (mrn_python_notebook) $>jupyter notebook
-  ```
-7. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
-
-*Note:* 
-- You can install a classic Jupyter Notebook on your local machine and then test the example on the machine. The alternate choice is a free Jupyter Notebook on cloud environments such as [Azure Notebook](https://notebooks.azure.com/) provided by Microsoft. You can find more details from [this tutorial](https://docs.microsoft.com/en-us/azure/notebooks/tutorial-create-run-jupyter-notebook). If you are not familiar with Jupyter Notebook, the following [tutorial](https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook) created by DataCamp may help.
 
 ## Example Results
 ### Send MRN_STORY request to Real-Time Advanced Distribution Server
