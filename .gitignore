@@ -13,6 +13,9 @@ notebook/mrn_realtime_news_notebook_app.ipynb
 notebook/mrn_trna_notebook_app.ipynb
 notebook/images/trna_process.png
 notebook/images/trna_process_assemble.png
+notebook/mrn_trna_notebook_app.ipynb
+notebook/mrn_trna_notebook_app_rto.ipynb
+notebook/cloud_mrn_notebook_app.ipynb
 
 old-requirements.txt
 mrn_console_app_rto.py

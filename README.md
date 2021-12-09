@@ -84,37 +84,37 @@ The first step is to unzip or download the example project folder into a directo
 
 ### <a id="how_to_setup"></a>Set Up Environment
 
-It is an advisable to create a dedicate Python environment to run each Python project. You can create a new Conda environment names *MRN_WEBSOCKET* with the following steps
+It is an advisable to create a dedicate Python environment to run each Python project. You can create a new Conda environment names *MRN_RTO* with the following steps
 
 1. Open Anaconda Prompt and go to the project's folder
-2. Run the following command in an Anaconda Prompt to create a Conda environment named *MRN_WEBSOCKET* for the project.
+2. Run the following command in an Anaconda Prompt to create a Conda environment named *MRN_RTO* for the project.
   ```
-  (base) $>conda create --name MRN_WEBSOCKET python=3.8
+  (base) $>conda create --name MRN_RTO python=3.8
   ```
-3. Once the environment is created, activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+3. Once the environment is created, activate MRN_RTO environment with this command in Anaconda Prompt
   ```
-  (base) $>conda activate MRN_WEBSOCKET
+  (base) $>conda activate MRN_RTO
   ```
-4. Run the following command to install the dependencies in the *MRN_WEBSOCKET* environment 
+4. Run the following command to install the dependencies in the *MRN_RTO* environment 
   ```
-  (MRN_WEBSOCKET) $>pip install -r requirements.txt
+  (MRN_RTO) $>pip install -r requirements.txt
   ```
 ### <a id="rtds_jupyter"></a>RTDS Jupyter Notebook example
 
 Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server should have a Service that contains MRN data. The Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the JupyterLab example.
 
 1. Open Anaconda Prompt and go to the project's folder
-2. Activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+2. Activate MRN_RTO environment with this command in Anaconda Prompt
   ```
-  (base) $>conda activate MRN_WEBSOCKET
+  (base) $>conda activate MRN_RTO
   ```
-3. Run the following command to install the JupyterLab application and pandas in the *MRN_WEBSOCKET* environment 
+3. Run the following command to install the JupyterLab application and pandas in the *MRN_RTO* environment 
   ```
-  (MRN_WEBSOCKET) $>conda install -c conda-forge jupyterlab pandas
+  (MRN_RTO) $>conda install -c conda-forge jupyterlab pandas
   ```
 4. In the current Anaconda Prompt, go to the project's notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
   ```
-  (MRN_WEBSOCKET) $>jupyter lab
+  (MRN_RTO) $>jupyter lab
   ```
 5. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
 
@@ -123,13 +123,13 @@ Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv
 Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv Real-Time Advanced Distribution Server should have a Service that contains MRN data. 
 
 1. Open Anaconda Prompt and go to the project's folder
-2. Activate MRN_WEBSOCKET environment with this command in Anaconda Prompt
+2. Activate MRN_RTO environment with this command in Anaconda Prompt
   ```
-  (base) $>conda activate MRN_WEBSOCKET
+  (base) $>conda activate MRN_RTO
   ```
 3. Then you can run mrn_console_app.py application with the following command
   ```
-  (MRN_WEBSOCKET) $> python mrn_console_app.py --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> 
+  (MRN_RTO) $> python mrn_console_app.py --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> 
   ```
 4. The application subscribes to ```MRN_STORNY``` RIC code from Real-Time Advanced Distribution Server by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only.
 
