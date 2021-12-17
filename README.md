@@ -12,8 +12,7 @@ Please see the full documentation of this example application in [this article](
 
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contain special Unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode Unicode character``` message in a console instead.
 
-
-**Update (As of December 2021)**: The example now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection. You do not need to switch to the [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch anymore.
+**Update (As of December 2021)**: The Main/Master branch now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection. You do not need to switch to the [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch anymore.
 * The RTO console example: Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 * The RTO notebook example: mrn_notebook_app_rto.ipynb notebook file. 
   - Special thanks to Neeranat Junsuriyawong from the Solutions Consultant team for the contribution to this RTO notebook example.
@@ -171,7 +170,7 @@ Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.M
 Alternatively, the *mrn_trna_console_rto.py* example of the [Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA) project also supports the MRN consumer with RTO, but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
 
 
-### Docker example
+### <a id="rtds_console_docker"></a>Bonus: RTDS console Docker example
 1. Go to the project folder in the console 
 2. Run ```$> docker build -t <project tag name> .``` command in a console to build an image from a Dockerfile.
     ```
@@ -179,7 +178,7 @@ Alternatively, the *mrn_trna_console_rto.py* example of the [Refinitiv-API-Sampl
     ```
 3. Once the build is a success, you can create and run the container with the following command
     ```
-    $> docker run --name mrn_console -it rtsdk_ws_mrn_python --hostname Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
+    $> docker run --name mrn_console -it rtsdk_ws_mrn_python --hostname <Real-Time Advanced Distribution Server IP Address/Hostname> --port <WebSocket Port> --ric <MRN RIC name>
     ```
 4. If you want to connect the Docker container to a localhost, please use ```host.docker.internal``` as the Host name. 
 5. Press Ctrl+C buttons to stop the application

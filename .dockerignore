@@ -2,3 +2,5 @@ notebook/
 .vscode
 mrn_python
 .gitignore
+.env
+.env.example

@@ -1,10 +1,10 @@
 #Build stage
-FROM python:3.8-alpine3.14 AS builder
+FROM python:3.8.12-alpine3.15 AS builder 
 
-LABEL maintainer="Wasin Waeosri <wasin.waeosri@rifinitiv.com>"
+LABEL maintainer="Wasin Waeosri <wasin.waeosri@lseg.com>"
 
 # Install gcc + musl-dev
-RUN apk add --no-cache gcc musl-dev
+RUN apk update && apk add --no-cache build-base gcc musl-dev 
 #Copy requirements.txt
 COPY requirements.txt .
 
@@ -12,8 +12,7 @@ COPY requirements.txt .
 RUN pip install --user -r requirements.txt
 
 # Run stage
-#FROM python:3.8.11-alpine
-FROM python:3.8.11-alpine3.14
+FROM python:3.8.12-alpine3.15
 WORKDIR /app
 
 # Update PATH environment variable + set Python buffer to make Docker print every message instantly.
