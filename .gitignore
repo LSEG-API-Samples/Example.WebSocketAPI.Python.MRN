@@ -16,6 +16,7 @@ notebook/images/trna_process_assemble.png
 notebook/mrn_trna_notebook_app.ipynb
 notebook/mrn_trna_notebook_app_rto.ipynb
 notebook/cloud_mrn_notebook_app.ipynb
+notebook/.env
 
 old-requirements.txt
 mrn_console_app_rto.py

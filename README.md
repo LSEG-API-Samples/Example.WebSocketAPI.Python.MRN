@@ -13,15 +13,15 @@ Please see the full documentation of this example application in [this article](
 *Note:* The news message is in UTF-8 JSON string format. Some news messages that contain special Unicode character may not be able to show in Windows OS console (cmd, git bash, powershell, etc) due to the OS limitation. Those messages will be print as ```UnicodeEncodeError exception. Cannot decode Unicode character``` message in a console instead.
 
 
-**Update (As of December 2021)**: The example now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection.
+**Update (As of December 2021)**: The example now supports the Refinitiv Real-Time -- Optimized (RTO - formerly known as ERT in Cloud) connection. You do not need to switch to the [ERT-in-Cloud](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN/tree/ERT-in-Cloud) branch anymore.
 * The RTO console example: Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
+* The RTO notebook example: mrn_notebook_app_rto.ipynb notebook file. 
+  - Special thanks to Neeranat Junsuriyawong from the Solutions Consultant team for the contribution to this RTO notebook example.
 * The deployed Refinitiv Real-Time Distribution System (RTDS) examples are mrn_console_app.py console application and mrn_notebook_app.ipynb notebook files.
 
 ## Prerequisite
 
-This example is focusing on the Refinitiv Machine Readable News (MRN) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. 
-
-The Tutorials page provides a step-by-step guide (connect, log in, request data, parse data, etc) for developers who are interested in developing a WebSocket application to consume real-time data from Refinitiv Real-Time. 
+This example project supports all Refinitiv Machine Readable News (MRN) data consumption from Refinitiv Real-Time with the WebSocket API. However, the data model description is focusing on the Real-Time News (MRN_STORY) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. The Tutorials page provides a step-by-step guide (connect, log in, request data, parse data, etc) for developers who are interested in developing a WebSocket application to consume real-time data from Refinitiv Real-Time. 
 
 ## Machine Readable News Overview
 
@@ -133,11 +133,42 @@ Please be informed that your Refinitiv Real-Time Advanced Data Hub and Refinitiv
   ```
 4. The application subscribes to ```MRN_STORNY``` RIC code from Real-Time Advanced Distribution Server by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only.
 
+### <a id="rto_jupyter"></a>RTO Jupyter Notebook example
+
+Please be informed that your RTO access credentials should have a permission to request MRN data. 
+
+1. Open Anaconda Prompt and go to the project's folder
+2. Activate MRN_RTO environment with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate MRN_RTO
+  ```
+3. Run the following command to install the JupyterLab application in the *MRN_RTO* environment 
+  ```
+  (MRN_RTO) $>conda install -c conda-forge jupyterlab
+  ```
+4. Go to the project's notebook folder. and create a file name ```.env``` with the following content.
+  ```
+  # RTO Credentials
+  RTO_USERNAME=<Your RTO Machine-ID>
+  RTO_PASSWORD=<Your RTO Password>
+  RTO_CLIENTID=<Your RTO App Key>
+
+  # RDP-RTO Core Configurations
+  RDP_BASE_URL=https://api.refinitiv.com
+  RDP_AUTH_URL=/auth/oauth2/v1/token
+  RDP_DISCOVERY_URL=/streaming/pricing/v1/
+  ```
+5. In the current Anaconda Prompt notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
+  ```
+  (MRN_RTO) $>jupyter lab
+  ```
+6. Open *mrn_notebook_app_rto.ipynb* Notebook document, then follow through each notebook cell.
+
 ### <a id="rto_console"></a>RTO console example
 
 Please check my colleague's [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 
-Alternatively, the *mrn_trna_console_rto.py* example of the [Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA) also supports the MRN consumer with RTO, but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
+Alternatively, the *mrn_trna_console_rto.py* example of the [Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.TRNA) project also supports the MRN consumer with RTO, but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
 
 
 ### Docker example
@@ -245,6 +276,10 @@ decompress News FRAGMENT(s) for GUID  Idw5d8Hwd_1907252I27R98ULgoP+y/Hs3Tovf2Kd9
 News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Laporan Harian atas Nilai Aktiva Bersih dan Komposisi Portofolio  \n\nAdditional attachments can be found below:\n\nhttp://pdf.reuters.com/pdfnews/pdfnews.asp?i=43059c3bf0e37541&u=urn:newsml:reuters.com:20190725:nIdw6tQfLW\n\n\n\nhttp://pdf.reuters.com/pdfnews/pdfnews.asp?i=43059c3bf0e37541&u=urn:newsml:reuters.com:20190725:nIdw99ZHSg\n\n\n\n\n\nDouble click on the URL above to view the article.Please note that internet access is required. If you experience problem accessing the internet, please consult your network administrator or technical support\n\nLatest version of Adobe Acrobat reader is recommended to view PDF files.  The latest version of the reader can be obtained from http://www.adobe.com/products/acrobat/readstep2.html\n\nFor Related News, Double Click on one of these codes:[IDXN] [IDX] [ASIA] [ID] [CNRA] [STX] [EQTY] [LID] [XPSG.JK] \n\nFor Relevant Price Information, Double Click on one of these code:<XPSG.JK> ', 'firstCreated': '2019-07-25T10:39:38.666Z', 'headline': 'Laporan Harian atas Nilai Aktiva Bersih dan Komposisi Portofolio  ', 'id': 'Idw5d8Hwd_1907252I27R98ULgoP+y/Hs3Tovf2Kd9cZQsvBkxfzk4', 'instancesOf': [], 'language': 'id', 'messageType': 2, 'mimeType': 'text/plain', 'provider': 'NS:IDX', 'pubStatus': 'stat:usable', 'subjects': ['A:1', 'G:1', 'G:25', 'G:2EK', 'G:CI', 'G:K', 'G:S', 'M:1QD', 'M:32', 'M:3H', 'M:AV', 'M:NU', 'M:Z', 'R:XPSG.JK', 'N2:ASEAN', 'N2:ASIA', 'N2:ASXPAC', 'N2:CMPNY', 'N2:EMRG', 'N2:EQTY', 'N2:ID', 'N2:LID', 'N2:MTPDF', 'N2:NEWR', 'N2:REG', 'N2:SEASIA', 'N2:STX'], 'takeSequence': 1, 'urgency': 3, 'versionCreated': '2019-07-25T10:39:38.666Z'}
 ```
 
+## Contributors
+* Wasin Waeosri (wasin.waeosri@lseg.com)
+* Neeranat Junsuriyawong (neeranat.junsuriyawong@lseg.com)
+
 ## References
 
 For further details, please check out the following resources:
@@ -257,5 +292,7 @@ For further details, please check out the following resources:
 * [MRN Data Models and Real-Time SDK Implementation Guide](https://developers.refinitiv.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java/documentation#mrn-data-models-implementation-guide).
 * [MRN WebSocket JavaScript example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
 * [MRN WebSocket C# NewsViewer example on GitHub](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.CSharp.MRNWebSocketViewer).
+* [Developer Article: Introduction to Machine Readable News with WebSocket API](https://developers.refinitiv.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
+* [Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/Refinitiv-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 
 For any question related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
