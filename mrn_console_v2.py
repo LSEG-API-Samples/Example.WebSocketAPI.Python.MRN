@@ -10,15 +10,14 @@
 import sys
 import time
 import getopt
-import requests
-import logging
 import socket
 import json
-import websocket
 import threading
 from datetime import datetime
 import base64
 import zlib
+import requests
+import websocket
 
 # Global Default Variables
 app_id = '256'
@@ -125,14 +124,14 @@ class WebSocketSession:
                     # The multiple fragments news are not completed, waiting.
                     if tot_size != len(fragment):
                         return None
-                    # The multiple fragments news are completed, delete assoiclate GUID envelop
+                    # The multiple fragments news are completed, delete associate GUID envelop
                     elif tot_size == len(fragment):
                         del _news_envelopes[guid_index]
                 else:
                     print(f'Error: Cannot find fragment for GUID {guid} with matching FRAG_NUM or MRN_SRC {mrn_src}')
                     return None
             else:  # FRAG_NUM = 1 The first fragment
-                tot_size = int(fields_data["TOT_SIZE"])
+                tot_size = int(fields_data['TOT_SIZE'])
                 print(f'FRAGMENT length = {len(fragment)}')
                 # The fragment news is not completed, waiting and add this news data to envelop object.
                 if tot_size != len(fragment):
