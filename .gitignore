@@ -20,3 +20,4 @@ notebook/.env
 
 old-requirements.txt
 mrn_console_app_rto.py
+websocket-api/

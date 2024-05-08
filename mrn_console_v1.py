@@ -274,8 +274,8 @@ if __name__ == "__main__":
             position = arg
         elif opt in ("--ric"):
             if arg not in ["MRN_STORY", "MRN_TRNA", "MRN_TRNA_DOC", "MRN_TRSI"]:
-                print(
-                    "The supported MRN RIC names are MRN_STORY or MRN_TRNA or MRN_TRNA_DOC or MRN_TRSI only")
+                #print("The supported MRN RIC names are MRN_STORY or MRN_TRNA or MRN_TRNA_DOC or MRN_TRSI only")
+                print("The supported MRN RIC names are MRN_STORY or MRN_TRNA or MRN_TRNA_DOC or MRN_TRS only")
                 sys.exit(2)
             else:
                 item = arg
