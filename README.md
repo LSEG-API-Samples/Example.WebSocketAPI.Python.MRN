@@ -84,14 +84,14 @@ This example project contains the following files and folders
 
 The first step is to unzip or download the example project folder into a directory of your choice, then choose how to run the application based on your environment below.
 
-### <a id="how_to_setup"></a>Set Up Environment
+### <a id="how_to_setup_console"></a>Set Up A Console Environment
 
 It is an advisable to create a dedicate Python environment to run each Python project. You can create a new Conda environment names *MRN_RTO* with the following steps
 
 1. Open Anaconda Prompt and go to the project's folder
 2. Run the following command in an Anaconda Prompt to create a Conda environment named *MRN_RTO* for the project.
   ```
-  (base) $>conda create --name MRN_RTO python=3.8
+  (base) $>conda create --name MRN_RTO python=3.10
   ```
 3. Once the environment is created, activate MRN_RTO environment with this command in Anaconda Prompt
   ```
@@ -101,6 +101,25 @@ It is an advisable to create a dedicate Python environment to run each Python pr
   ```
   (MRN_RTO) $>pip install -r requirements.txt
   ```
+
+### <a id="how_to_setup"></a>Set Up A Jupyter Notebook Environment
+
+It is an advisable to create a dedicate Python environment to run each Python project. You can create a new Conda environment names *MRN_RTO* with the following steps
+
+1. Open Anaconda Prompt and go to the project's folder
+2. Run the following command in an Anaconda Prompt to create a Conda environment named *MRN_Notebook* for the project.
+  ```
+  (base) $>conda create --name MRN_Notebook python=3.10
+  ```
+3. Once the environment is created, activate MRN_Notebook environment with this command in Anaconda Prompt
+  ```
+  (base) $>conda activate MRN_Notebook
+  ```
+4. Run the following command to install the dependencies in the *MRN_Notebook* environment 
+  ```
+  (MRN_Notebook) $>pip install -r requirements_notebook.txt
+  ```
+
 ### <a id="rtds_jupyter"></a>RTDS Jupyter Notebook example
 
 Please be informed that your Real-Time Advanced Data Hub and Real-Time Advanced Distribution Server should have a Service that contains MRN data. The Python [Anaconda](https://www.anaconda.com/distribution/) or [MiniConda](https://docs.conda.io/en/latest/miniconda.html) distribution/package manager is highly recommended for running the JupyterLab example.
@@ -108,17 +127,13 @@ Please be informed that your Real-Time Advanced Data Hub and Real-Time Advanced 
 1. Open Anaconda Prompt and go to the project's folder
 2. Activate MRN_RTO environment with this command in Anaconda Prompt
   ```
-  (base) $>conda activate MRN_RTO
+  (base) $>conda activate MRN_Notebook
   ```
-3. Run the following command to install the JupyterLab application and pandas in the *MRN_RTO* environment 
+3. In the current Anaconda Prompt, go to the project's notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
   ```
-  (MRN_RTO) $>conda install -c conda-forge jupyterlab pandas
+  (MRN_Notebook) $>jupyter lab
   ```
-4. In the current Anaconda Prompt, go to the project's notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
-  ```
-  (MRN_RTO) $>jupyter lab
-  ```
-5. Open *mrn_notebook_app.ipynb* Notebook document, then follow through each notebook cell.
+4. Open *mrn_notebook_app_rtds.ipynb* Notebook document, then follow through each notebook cell.
 
 ### <a id="rtds_console"></a>RTDS Console example
 
@@ -140,17 +155,13 @@ Please be informed that your Real-Time Advanced Data Hub and Real-Time Advanced 
 Please be informed that your RTO access credentials should have a permission to request MRN data. 
 
 1. Open Anaconda Prompt and go to the project's folder
-2. Activate MRN_RTO environment with this command in Anaconda Prompt
+2. Activate MRN_Notebook environment with this command in Anaconda Prompt
   ```
-  (base) $>conda activate MRN_RTO
+  (base) $>conda activate MRN_Notebook
   ```
-3. Run the following command to install the JupyterLab application in the *MRN_RTO* environment 
+3. Go to the project's notebook folder. and create a file name ```.env``` with the following content.
   ```
-  (MRN_RTO) $>conda install -c conda-forge jupyterlab
-  ```
-4. Go to the project's notebook folder. and create a file name ```.env``` with the following content.
-  ```
-  # RTO Credentials
+  # RTO Authentication Version 1 Credentials
   RTO_USERNAME=<Your RTO Machine-ID>
   RTO_PASSWORD=<Your RTO Password>
   RTO_CLIENTID=<Your RTO App Key>
@@ -160,13 +171,13 @@ Please be informed that your RTO access credentials should have a permission to 
   RDP_AUTH_URL=/auth/oauth2/v1/token
   RDP_DISCOVERY_URL=/streaming/pricing/v1/
   ```
-5. In the current Anaconda Prompt notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
+4. In the current Anaconda Prompt notebook folder. Run the following command to start the JupyterLab application in the notebook folder.
   ```
-  (MRN_RTO) $>jupyter lab
+  (MRN_Notebook) $>jupyter lab
   ```
-6. Open *mrn_notebook_app_rto.ipynb* Notebook document, then follow through each notebook cell.
+5. Open *mrn_notebook_app_rto_v1.ipynb* Notebook document, then follow through each notebook cell.
 
-### <a id="rto_console"></a>RTO console example
+### <a id="rto_console"></a>RTO Authentication Version 1 Console Example
 
 Please check my colleague's [LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 
