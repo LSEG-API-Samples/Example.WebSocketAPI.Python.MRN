@@ -502,7 +502,7 @@ if __name__ == "__main__":
             print('Failed to retrieve endpoints from Delivery Platform Service Discovery. Exiting...')
             sys.exit(1)
 
-    # Start websocket handshake; create two sessions when the hotstandby parameter is specified.
+    # Start websocket handshake;
     session1 = WebSocketSession("Session1", hostList[0])
     session1.connect()
 

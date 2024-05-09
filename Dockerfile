@@ -24,4 +24,4 @@ COPY --from=builder /root/.local /root/.local
 COPY mrn_console_app.py .
 
 #Run Python
-ENTRYPOINT ["python", "./mrn_console_app.py"]
+ENTRYPOINT ["python", "./mrn_console_rtds.py"]

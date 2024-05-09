@@ -14,9 +14,9 @@ Please see the full documentation of this example application in [this article](
 
 **Update (As of May 2024)**: 
 * The RTO console example (Authentication Version 1): Please check my colleague's [LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
-* The RTO notebook example (Authentication Version 1): *mrn_notebook_app_rto.ipynb* notebook file. 
+* The RTO notebook example (Authentication Version 1): *mrn_notebook_app_rto_v1.ipynb* notebook file. 
   - Special thanks to Neeranat Junsuriyawong from the Solutions Consultant team for the contribution to this RTO notebook example.
-* The deployed Real-Time Distribution System (RTDS) examples are *mrn_console_rtds.py* console application and *mrn_notebook_app.ipynb* notebook files.
+* The deployed Real-Time Distribution System (RTDS) examples are *mrn_console_rtds.py* console application and *mrn_notebook_app_rtds.ipynb* notebook files.
 
 ## <a id="mrn_prerequisite"></a>Prerequisite
 
@@ -62,7 +62,7 @@ This example requires the following dependencies software and libraries.
 6. [Docker Engine - Community Edition](https://docs.docker.com/install/) (for running a console example in Docker only)
 
 *Note:* 
-- The Python example has been qualified with Python version Python 3.8.x.
+- The Python example has been qualified with Python version Python 3.10.x.
 - It is not advisable to change the Real-Time Distribution System configuration if you are not familiar with the configuration procedures. Please consult your Market Data administrator for any questions regarding the Real-Time Distribution System-MRN service configuration.
 - Please contact your LSEG representative to help you to access the RTO account, and services.
 - Please refer to the [pip installation guide page](https://pip.pypa.io/en/stable/installing/) if your environment does not have the [pip tool](https://pypi.org/project/pip/) installed. 
@@ -285,7 +285,7 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 ## <a id="references"></a>References
 
 For further details, please check out the following resources:
-* [Real-Time Market Data APIs & Distribution page](https://developers.lseg.com/en/use-cases-catalog/refinitiv-real-time) on the [Refinitiv Developer Community](https://developers.lseg.com/) website.
+* [Real-Time Market Data APIs & Distribution page](https://developers.lseg.com/en/use-cases-catalog/refinitiv-real-time) on the [LSEG Developer Community](https://developers.lseg.com/) website.
 * [WebSocket API page](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api).
 * [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
 * [Introduction to Machine Readable News with WebSocket API](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
