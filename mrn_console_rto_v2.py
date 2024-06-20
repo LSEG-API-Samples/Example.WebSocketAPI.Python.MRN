@@ -7,6 +7,7 @@
 
 
 #!/usr/bin/env python
+import os
 import sys
 import time
 import getopt
@@ -18,6 +19,7 @@ import base64
 import zlib
 import requests
 import websocket
+from dotenv import load_dotenv
 
 # Global Default Variables
 app_id = '256'
@@ -70,7 +72,7 @@ class WebSocketSession:
         """ Create and send MRN request """
         mrn_req_json = {
             'ID': 2,
-            "Domain": mrn_domain,
+            'Domain': mrn_domain,
             'Key': {
                 'Name': mrn_item,
                 'Service': service
@@ -78,12 +80,12 @@ class WebSocketSession:
         }
 
         self.web_socket_app.send(json.dumps(mrn_req_json))
-        print("SENT:")
+        print('SENT:')
         print(json.dumps(mrn_req_json, sort_keys=True, indent=2, separators=(',', ':')))
 
     def process_refresh(self, message_json):
         """Function process Refresh message"""
-        print("RECEIVED: Refresh Message")
+        print('RECEIVED: Refresh Message')
         self.decode_fieldlist(message_json['Fields'])
 
     def process_mrn_update(self, message_json):  
@@ -170,7 +172,7 @@ class WebSocketSession:
 
     def process_status(self, message_json):  # process incoming status message
         """Function process incoming status message"""
-        print("RECEIVED: Status Message")
+        print('RECEIVED: Status Message')
         print(json.dumps(message_json, sort_keys=True, indent=2, separators=(',', ':')))
 
     # ---JSON-OMM Process functions ---#
@@ -204,8 +206,6 @@ class WebSocketSession:
         """ Send item request upon login success """
         if message_json['Type'] == "Status" and message_json['Domain'] == "Login" and \
                 (message_json['State']['Stream'] != "Open" or message_json['State']['Data'] != "Ok"):
-            #print((str(datetime.now()) + " Error: Login failed, received status message, closing: StreamState={}, DataState={}" \
-            #    .format(message_json['State']['Stream'],message_json['State']['Data'])))
             print(f'{str(datetime.now())} Error: Login failed, received status message, closing: StreamState={message_json["State"]["Stream"]}, DataState={message_json["State"]["Data"]}')
             if self.web_socket_open:
                 self.web_socket_app.close()
@@ -220,14 +220,14 @@ class WebSocketSession:
         message_type = message_json['Type']
         
         if message_type == 'Refresh':
-            if "Domain" in message_json:
-                message_domain = message_json["Domain"]
+            if 'Domain' in message_json:
+                message_domain = message_json['Domain']
                 if message_domain == 'Login':
                     self._process_login_response(message_json)
                 elif message_domain:
                     self.process_refresh(message_json)
         elif message_type == 'Update':
-            if "Domain" in message_json and message_json['Domain'] == mrn_domain:
+            if 'Domain' in message_json and message_json['Domain'] == mrn_domain:
                 self.process_mrn_update(message_json)
         elif message_type == 'Status':
             self.process_status(message_json)
@@ -310,13 +310,11 @@ def query_service_discovery(url=None):
     if url is None:
         url = discovery_url
 
-    print("\n" + str(datetime.now()) + \
-            " Sending Delivery Platform service discovery request to ", url, "...\n" )
-
+    print(f'\n {str(datetime.now())} Sending Delivery Platform service discovery request to {url}...\n')
     try:
         r = requests.get(url, 
-                         headers={"Authorization": "Bearer " + auth_token}, 
-                         params={"transport": "websocket"}, 
+                         headers={'Authorization': f'Bearer {auth_token}'}, 
+                         params={'transport': 'websocket'}, 
                          allow_redirects=False , timeout= 45)
 
     except requests.exceptions.RequestException as e:
@@ -350,7 +348,7 @@ def query_service_discovery(url=None):
                 for hostIndex in range(len(backupHostList)):
                     hostList.append(backupHostList[hostIndex])
             else:
-                print("The region:", region, "is not present in list of endpoints")
+                print(f'The region: {region} is not present in list of endpoints')
                 sys.exit(1)
 
         return True
@@ -387,8 +385,7 @@ def get_auth_token(url=None):
 
     data = {'grant_type': 'client_credentials', 'scope': scope, 'client_id': clientid, 'client_secret': client_secret}
 
-    print("\n" + str(datetime.now()) + \
-            " Sending authentication request with client credentials to ", url, "...\n")
+    print(f'\n {str(datetime.now())} Sending authentication request with client credentials to {url} ...\n')
     try:
         # Request with auth for https protocol    
         r = requests.post(url,
@@ -403,7 +400,7 @@ def get_auth_token(url=None):
 
     if r.status_code == 200:
         auth_json = r.json()
-        print(str(datetime.now()) + " Delivery Platform Authentication succeeded. RECEIVED:")
+        print(f'{str(datetime.now())} Delivery Platform Authentication succeeded. RECEIVED:')
         print(json.dumps(auth_json, sort_keys=True, indent=2, separators=(',', ':')))
         return auth_json['access_token'], auth_json['expires_in']
     elif r.status_code in [ 301, 302, 307, 308 ]:
@@ -431,21 +428,26 @@ def get_auth_token(url=None):
 def print_commandline_usage_and_exit(exit_code):
     print('Usage: market_price_rdpgw_client_cred_auth.py [--app_id app_id] '
           '--clientid clientid --clientsecret client secret [--position position] [--auth_url auth_url] '
-          '[--hostname hostname] [--port port] [--standbyhostname hostname] [--standbyport port] ' 
+          '[--hostname hostname] [--port port] ' 
           '[--discovery_url discovery_url] [--scope scope] [--service service]'
-          '[--region region] [--ric ric] [--hotstandby] [--help]')
+          '[--region region] [--ric ric] [--help]')
     sys.exit(exit_code)
 
 
 if __name__ == "__main__":
+    # Get config from Environment Variable
+
+    load_dotenv()  # take environment variables from .env.
+    clientid = os.environ['CLIENT_ID']
+    client_secret = os.environ['CLIENT_SECRET']
     # Get command line parameters
     opts = []
     try:
         opts, args = getopt.getopt(sys.argv[1:], "", [
             "help", "app_id=", "clientsecret=", "clientid=", 
-            "hostname=", "port=", "standbyhostname=", "standbyport=", 
+            "hostname=", "port=", 
             "position=", "auth_url=", "discovery_url=", 
-            "scope=", "service=", "region=", "ric=", "hotstandby"])
+            "scope=", "service=", "region=", "ric="])
     except getopt.GetoptError:
         print_commandline_usage_and_exit(2)
     for opt, arg in opts:
@@ -482,7 +484,7 @@ if __name__ == "__main__":
         # Populate position if possible
         try:
             position_host = socket.gethostname()
-            position = socket.gethostbyname(position_host) + "/" + position_host
+            position = f'{socket.gethostbyname(position_host)}/{position_host}'
         except socket.gaierror:
             position = '127.0.0.1/net'
 
@@ -495,7 +497,7 @@ if __name__ == "__main__":
 
     # If hostname is specified, use it for the connection
     if hostName != '':
-        hostList.append(hostName + ':' + str(port))
+        hostList.append(f'{hostName}:{str(port)}')
     else:
         # Query VIPs from Delivery Platform service discovery if user did not specify hostname
         if not query_service_discovery():
@@ -503,7 +505,7 @@ if __name__ == "__main__":
             sys.exit(1)
 
     # Start websocket handshake;
-    session1 = WebSocketSession("Session1", hostList[0])
+    session1 = WebSocketSession('Session1', hostList[0])
     session1.connect()
 
     try:
@@ -537,7 +539,7 @@ if __name__ == "__main__":
                     if (not session1.force_disconnected) and session1.reconnecting:
                         session1.connect()
                 else:
-                    print("Failed authentication with Delivery Platform. Exiting...")
+                    print('Failed authentication with Delivery Platform. Exiting...')
                     sys.exit(1) 
 
 
