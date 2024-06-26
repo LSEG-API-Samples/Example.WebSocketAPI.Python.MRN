@@ -24,6 +24,7 @@ from dotenv import load_dotenv
 # Global Default Variables
 app_id = '256'
 auth_token = ''
+expire_time = ''
 auth_url = 'https://api.refinitiv.com/auth/oauth2/v2/token'
 clientid = ''
 client_secret = ''
@@ -37,7 +38,6 @@ region = 'ap-southeast-1'
 ric = '/TRI.N'
 scope = 'trapi.streaming.pricing.read'
 service = 'ELEKTRON_DD'
-session2 = None
 curTS = 0
 tokenTS = 0
 
