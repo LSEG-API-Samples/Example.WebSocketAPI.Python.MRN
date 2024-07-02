@@ -308,7 +308,7 @@ def query_service_discovery(url=None):
     if url is None:
         url = discovery_url
 
-    print(f'\n {str(datetime.now())} Sending Delivery Platform service discovery request to {url}...\n')
+    print(f'\n{str(datetime.now())}Sending Delivery Platform service discovery request to {url}...\n')
     try:
         r = requests.get(url, 
                          headers={'Authorization': f'Bearer {auth_token}'}, 
@@ -383,7 +383,7 @@ def get_auth_token(url=None):
 
     data = {'grant_type': 'client_credentials', 'scope': scope, 'client_id': clientid, 'client_secret': client_secret}
 
-    print(f'\n {str(datetime.now())} Sending authentication request with client credentials to {url} ...\n')
+    print(f'\n{str(datetime.now())}Sending authentication request with client credentials to {url} ...\n')
     try:
         # Request with auth for https protocol    
         r = requests.post(url,
