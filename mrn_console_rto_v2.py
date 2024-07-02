@@ -284,13 +284,11 @@ class WebSocketSession:
                                                      subprotocols=['tr_json2'])
         # Event loop
         if not self.wst:
-            #print(str(datetime.now()) + " " + self.session_name + ": Connecting WebSocket to " + ws_address + "...")
             print(f'{str(datetime.now())} {str(self.session_name)}: Connecting WebSocket to {ws_address} ...')
             self.wst = threading.Thread(target=self.web_socket_app.run_forever, kwargs={'sslopt': {'check_hostname': False}})
             self.wst.daemon = True
             self.wst.start()
         elif self.reconnecting and not self.force_disconnected:
-            #print(str(datetime.now()) + " " + self.session_name + ": Reconnecting WebSocket to " + ws_address + "...")
             print(f'{str(datetime.now())} {str(self.session_name)}: Reconnecting WebSocket to {ws_address} ...')
             self.web_socket_app.run_forever()
 
@@ -492,8 +490,8 @@ if __name__ == "__main__":
     if not auth_token:
         print('Failed initial authentication with Delivery Platform. Exiting...')
         sys.exit(1)
-
-    tokenTS = time.time()
+    # get an access token receiving time, used for connection logic
+    tokenTS = time.time() 
 
     # If hostname is specified, use it for the connection
     if hostName != '':
@@ -522,10 +520,10 @@ if __name__ == "__main__":
                 if session1.reconnecting:
                     curTS = time.time()
                     if (int(expire_time) < 600):
-                        deltaTime = float(expire_time) * 0.05
+                        DELTA_TIME = float(expire_time) * 0.05
                     else:
-                        deltaTime = 300
-                    if (int(curTS) >= int(float(tokenTS) + float(expire_time) - float(deltaTime))):
+                        DELTA_TIME = 300
+                    if (int(curTS) >= int(float(tokenTS) + float(expire_time) - float(DELTA_TIME))):
                         auth_token, expire_time = get_auth_token() 
                         tokenTS = time.time()
                 else:

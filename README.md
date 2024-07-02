@@ -9,8 +9,8 @@
 
 **Important Note**:
 
-- If you are using the Wealth solution (*Pricing Streaming Optimized Service* or *Pricing Streaming Service*), the products currently support Authentication Version 1 only (**As of May 2024**). Please contact your LSEG representative to verify if you are using Wealth or RTO solution.
-- For RTO customers, please be informed that the Authentication Version 1 is currently limited support. Please refer to [PCN207737](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN207737) and [PCN208969](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN208969) documents for more detail.
+- If you are using the Wealth solution (*Pricing Streaming Optimized Service* or *Pricing Streaming Service*), the products currently support Version 1 Authentication only (**As of May 2024**). Please contact your LSEG representative to verify if you are using Wealth or RTO solution.
+- For RTO customers, please be informed that the Version 1 Authentication is currently limited support. Please refer to [PCN207737](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN207737) and [PCN208969](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN208969) documents for more detail.
 
 This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from LSEG Real-Time Distribution System (RTDS) and LSEG Real-Time Optimized (RTO). The example just connects to LSEG Real-Time platform via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
 
@@ -20,13 +20,13 @@ Please see the full documentation of this example application in [this article](
 
 **Update (As of June 2024)**:
 
-- The RTO console example (Authentication Version 1): Please check my colleague's [LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
-- The RTO notebook example (Authentication Version 1): *mrn_notebook_app_rto_v1.ipynb* notebook file.
+- The RTO console example (Version 1 Authentication): Please check my colleague's [LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
+- The RTO notebook example (Version 1 Authentication): *mrn_notebook_app_rto_v1.ipynb* notebook file.
   - Special thanks to Neeranat Junsuriyawong from the Solutions Consultant team for the contribution to this RTO notebook example.
-- The RTO console example (Authentication Version 2): *mrn_console_rto_v2.py* file
+- The RTO console example (Version 2 Authentication): *mrn_console_rto_v2.py* file
 - The deployed Real-Time Distribution System (RTDS) examples are *mrn_console_rtds.py* console application and *mrn_notebook_app_rtds.ipynb* notebook files.
 
-You can find more information about the Authentication Version 2 from the following resources:
+You can find more information about the Version 2 Authentication from the following resources:
 
 - [Account authorization V1 to V2 migration cheat sheet](https://developers.lseg.com/en/article-catalog/article/account-authorization-v1-to-v2-migration-cheat-sheet) article.
 - [Getting Started with Version 2 Authentication for Real-Time - Optimized: Overview](https://developers.lseg.com/en/article-catalog/article/getting-started-with-version-2-authentication-for-refinitiv-real) article.
@@ -90,11 +90,11 @@ This example requires the following dependencies software and libraries.
 This example project contains the following files and folders
 
 1. *mrn_console_rtds.py*: The example console application for the deployed RTDS connection file
-2. *mrn_console_rto_v2.py*: The example console application for the RTO Authentication Version 2 connection file
-3. *.env.example*: The example ```.env``` file for the RTO Authentication Version 2 connection.
+2. *mrn_console_rto_v2.py*: The example console application for the RTO Version 2 Authentication connection file
+3. *.env.example*: The example ```.env``` file for the RTO Version 2 Authentication connection.
 4. *notebook_python/mrn_notebook_app.ipynb*: The example Jupyter Notebook application for the deployed RTDS connection file
-5. *notebook_python/mrn_notebook_app_rto.ipynb*: The example Jupyter Notebook application for the RTO Authentication Version 1 connection file
-6. *notebook_python/.env.example*: The example ```.env``` file for the RTO Authentication Version 1 connection notebook.
+5. *notebook_python/mrn_notebook_app_rto.ipynb*: The example Jupyter Notebook application for the RTO Version 1 Authentication connection file
+6. *notebook_python/.env.example*: The example ```.env``` file for the RTO Version 1 Authentication connection notebook.
 7. *Dockerfile*: The example application Dockerfile
 8. *requirements.txt*: The application dependencies configuration file
 9. LICENSE.md: Project's license file
@@ -189,7 +189,7 @@ Please be informed that your Real-Time Advanced Data Hub and Real-Time Advanced 
 
 4. The application subscribes to ```MRN_STORNY``` RIC code from Real-Time Advanced Distribution Server by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only.
 
-### <a id="rto_jupyter"></a>RTO Authentication Version 1  Jupyter Notebook example
+### <a id="rto_jupyter"></a>RTO Version 1 Authentication  Jupyter Notebook example
 
 Please be informed that your RTO access credentials should have a permission to request MRN data.
 
@@ -203,7 +203,7 @@ Please be informed that your RTO access credentials should have a permission to 
 3. Go to the project's notebook folder. and create a file name ```.env``` with the following content.
 
   ```ini
-  # RTO Authentication Version 1 Credentials
+  # RTO Version 1 Authentication Credentials
   RTO_USERNAME=<Your RTO Machine-ID>
   RTO_PASSWORD=<Your RTO Password>
   RTO_CLIENTID=<Your RTO App Key>
@@ -222,18 +222,41 @@ Please be informed that your RTO access credentials should have a permission to 
 
 5. Open *mrn_notebook_app_rto_v1.ipynb* Notebook document, then follow through each notebook cell.
 
-### <a id="rto_console"></a>RTO Authentication Version 1 Console Example
+### <a id="rto_console"></a>RTO Version 1 Authentication Console Example
 
 Please check my colleague's [LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.RTO) GitHub Repository.
 
-Alternatively, the *mrn_trna_console_rto.py* example of the [LSEG-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.TRNA) project also supports the MRN consumer with RTO (Authentication Version 1), but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
+Alternatively, the *mrn_trna_console_rto.py* example of the [LSEG-API-Samples/Example.WebSocketAPI.Python.TRNA](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Python.MRN.TRNA) project also supports the MRN consumer with RTO (Version 1 Authentication), but it subscribes to ```MRN_TRNA``` RIC code from the RTO by default.
 
-### <a id="rtds_console_docker"></a>Bonus: RTO Authentication Version 2 console Docker example
+### <a id="rto_v2_console"></a>RTO Version 2 Authentication Console Example
 
 1. Create a file name ```.env``` at the root folder of the project and then add the following content to a file
 
     ```ini
-    ## Authentication Version 2
+    ## Version 2 Authentication
+    CLIENT_ID=CLIENT_ID_V2
+    CLIENT_SECRET=CLIENT_SECRET_V2
+    ```
+2. Activate MRN_RTO environment with this command in Anaconda Prompt
+
+  ```bash
+  (base) $>conda activate MRN_RTO
+  ```
+
+3. Then you can run mrn_console_rto_v2.py application with the following command
+
+  ```bash
+  (MRN_RTO) $> python mrn_console_rto_v2.py --ric <MRN_STORY by default> 
+  ```
+
+4. The application subscribes to ```MRN_STORY``` RIC code from RTO by default. You can pass your interested MRN RIC code to ```--ric``` parameter on the application command line. The supported MRN RIC codes are ```MRN_STORY```, ```MRN_TRNA```, ```MRN_TRNA_DOC``` and ```MRN_TRSI``` only.
+
+### <a id="rtds_console_docker"></a>Bonus: RTO Version 2 Authentication console Docker example
+
+1. Create a file name ```.env``` at the root folder of the project and then add the following content to a file
+
+    ```ini
+    ## Version 2 Authentication
     CLIENT_ID=CLIENT_ID_V2
     CLIENT_SECRET=CLIENT_SECRET_V2
     ```
