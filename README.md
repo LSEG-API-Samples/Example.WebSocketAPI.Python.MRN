@@ -285,7 +285,7 @@ Alternatively, the *mrn_trna_console_rto.py* example of the [LSEG-API-Samples/Ex
 4. Once the build is a success, you can create and run the container with the following command
 
     ```bash
-    $> docker run --name rto_v2_ws_mrn_python -it rto_v2_ws_mrn_python --ric <MRN RIC name>
+    $> docker run --name rto_v2_ws_mrn_python -it --env-file .env rto_v2_ws_mrn_python --ric <MRN RIC name>
     ```
 
 5. Press Ctrl+C buttons to stop the application
