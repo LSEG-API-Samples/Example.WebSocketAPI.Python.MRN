@@ -260,21 +260,7 @@ Alternatively, the *mrn_trna_console_rto.py* example of the [LSEG-API-Samples/Ex
     CLIENT_ID=CLIENT_ID_V2
     CLIENT_SECRET=CLIENT_SECRET_V2
     ```
-
-2. Open a ```Dockerfile``` and remove the following lines from a file
-
-    ```dockerfile
-    # ------------ Begin: For run in internal LSEG ZScaler environment ------------
-    #Image runs internet requests over HTTPS – Install Certs if dev environment
-
-    #Add the CA Certificate to the container
-    ADD ./ZscalerRootCerttificate.pem /usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt
-    RUN chmod 644 /usr/local/share/ca-certificates/ZscalerRootCertificate-2048-SHA256.crt && update-ca-certificates
-    ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
-
-    # ------------ End: For run in internal LSEG ZScaler environment ------------
-    ```
-
+    
 2. Go to the project folder in the console
 3. Run the following command in a console to build an image from a Dockerfile.
 
