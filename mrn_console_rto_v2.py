@@ -45,6 +45,10 @@ mrn_domain = 'NewsTextAnalytics'
 mrn_item = 'MRN_STORY'
 _news_envelopes = []
 
+# Config the encoding for the console
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+
 
 
 class WebSocketSession:

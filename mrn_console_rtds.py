@@ -35,6 +35,10 @@ web_socket_open = False
 
 _news_envelopes = []
 
+# Config the encoding for the console
+sys.stdin.reconfigure(encoding='utf-8')
+sys.stdout.reconfigure(encoding='utf-8')
+
 ''' MRN Process Code '''
 
 

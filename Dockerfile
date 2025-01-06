@@ -30,7 +30,9 @@ WORKDIR /app
 
 # Update PATH environment variable + set Python buffer to make Docker print every message instantly.
 ENV PATH=/root/.local:$PATH \
-    PYTHONUNBUFFERED=1
+    PYTHONUNBUFFERED=1\
+    PYTHONIOENCODING=utf-8\
+    PYTHONLEGACYWINDOWSSTDIO=utf-8
 
 # copy only the dependencies installation from the 1st stage image
 COPY --from=builder /root/.local /root/.local
