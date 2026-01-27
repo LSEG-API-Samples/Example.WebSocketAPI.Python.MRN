@@ -10,9 +10,9 @@
 **Important Note**:
 
 - If you are using the Wealth solution (*Pricing Streaming Optimized Service* or *Pricing Streaming Service*), the products currently support Version 1 Authentication only (**As of May 2024**). Please contact your LSEG representative to verify if you are using Wealth or RTO solution.
-- For RTO customers, please be informed that the Version 1 Authentication is currently limited support. Please refer to [PCN207737](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN207737) and [PCN208969](https://my.refinitiv.com/content/mytr/en/product-notifications/details.html?id=PCN208969) documents for more detail.
+- For RTO customers, please be informed that the Version 1 Authentication is currently limited support. Please refer to [PCN207737](https://myaccount.lseg.com/content/mytr/en/product-notifications/details.html?id=PCN207737) and [PCN208969](https://myaccount.lseg.com/content/mytr/en/product-notifications/details.html?id=PCN208969) documents for more detail.
 
-This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from LSEG Real-Time Distribution System (RTDS) and LSEG Real-Time Optimized (RTO). The example just connects to LSEG Real-Time platform via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
+This example shows how developers may use the [Websocket API for Pricing Streaming and Real-Time Service](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/websocket-api) aka Websocket API application to subscribe Machine Readable News (MRN) from LSEG Real-Time Distribution System (RTDS) and LSEG Real-Time Optimized (RTO). The example just connects to LSEG Real-Time platform via a WebSocket connection, then subscribes and displays MRN News data in a console or classic Jupyter Notebook. The project is implemented with Python language for both console and Jupyter Notebook applications, but the main concept for consuming and assembling MRN News messages are the same for all technologies.
 
 Please see the full documentation of this example application in [this article](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
@@ -33,7 +33,7 @@ You can find more information about the Version 2 Authentication from the follow
 
 ## <a id="mrn_prerequisite"></a>Prerequisite
 
-This example project supports all LSEG Machine Readable News (MRN) data consumption from the Real-Time platform with the WebSocket API. However, the data model description is focusing on the Real-Time News (MRN_STORY) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api/tutorials) page if you are not familiar with WebSocket API. The Tutorials page provides a step-by-step guide (connect, log in, request data, parse data, etc) for developers who are interested in developing a WebSocket application to consume real-time data from the Real-Time platform.
+This example project supports all LSEG Machine Readable News (MRN) data consumption from the Real-Time platform with the WebSocket API. However, the data model description is focusing on the Real-Time News (MRN_STORY) data processing only. I highly recommend you check the  [WebSocket API Tutorials](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/websocket-api/tutorials) page if you are not familiar with WebSocket API. The Tutorials page provides a step-by-step guide (connect, log in, request data, parse data, etc) for developers who are interested in developing a WebSocket application to consume real-time data from the Real-Time platform.
 
 ## <a id="news_mrn_overview"></a>Machine Readable News Overview
 
@@ -45,7 +45,7 @@ MRN is published over the Real-Time platform using an Open Message Model (OMM) e
 
 A FRAGMENT field has a different data type based on a connection type:
 
-- RSSL connection (RTSDK [C++](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-cc)/[Java](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java)/[C#](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-cc)): BUFFER type
+- RSSL connection (RTSDK [C++](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-cc)/[Java](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java)/[C#](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-csharp)): BUFFER type
 - WebSocket connection: Base64 ASCII string
 
 The data goes through the following series of transformations:
@@ -63,7 +63,7 @@ If you are not familiar with MRN concept, please visit the following resources w
 
 - [Webinar Recording: Introduction to Machine Readable News](https://developers.lseg.com/news#news-accordion-nid-12045)
 - [Introduction to Machine Readable News (MRN) with Enterprise Message API (EMA)](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
-- [MRN Data Models and the Real-Time SDK Implementation Guide](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java/documentation#mrn-data-models-implementation-guide).
+- [MRN Data Models and the Real-Time SDK Implementation Guide](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#mrn-data-models-implementation-guide).
 - [Introduction to Machine Readable News with WebSocket API](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 
 ## <a id="prerequisite"></a>Example Prerequisite
@@ -379,13 +379,13 @@ News = {'altId': 'nIdw5d8Hwd', 'audiences': ['NP:CNRA', 'NP:IDXN'], 'body': 'Lap
 
 For further details, please check out the following resources:
 
-- [Real-Time Market Data APIs & Distribution page](https://developers.lseg.com/en/use-cases-catalog/refinitiv-real-time) on the [LSEG Developer Community](https://developers.lseg.com/) website.
-- [WebSocket API page](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/refinitiv-websocket-api).
-- [Developer Webinar Recording: Introduction to Electron WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
+- [Real-Time Market Data APIs & Distribution page](https://developers.lseg.com/en/use-cases-catalog/real-time) on the [LSEG Developer Community](https://developers.lseg.com/) website.
+- [WebSocket API page](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/websocket-api).
+- [Developer Webinar Recording: Introduction to WebSocket API](https://www.youtube.com/watch?v=CDKWMsIQfaw).
 - [Introduction to Machine Readable News with WebSocket API](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
 - [Machine Readable News (MRN) & N2_UBMS Comparison and Migration Guide](https://developers.lseg.com/en/article-catalog/article/machine-readable-news-mrn-n2_ubms-comparison-and-migration-guide).
 - [Introduction to Machine Readable News (MRN) with Enterprise Message API (EMA)](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-mrn-elektron-message-api-ema).
-- [MRN Data Models and Real-Time SDK Implementation Guide](https://developers.lseg.com/en/api-catalog/refinitiv-real-time-opnsrc/rt-sdk-java/documentation#mrn-data-models-implementation-guide).
+- [MRN Data Models and Real-Time SDK Implementation Guide](https://developers.lseg.com/en/api-catalog/real-time-opnsrc/rt-sdk-java/documentation#mrn-data-models-implementation-guide).
 - [MRN WebSocket JavaScript example on GitHub](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.Javascript.NewsMonitor).
 - [MRN WebSocket C# NewsViewer example on GitHub](https://github.com/LSEG-API-Samples/Example.WebSocketAPI.CSharp.MRNWebSocketViewer).
 - [Developer Article: Introduction to Machine Readable News with WebSocket API](https://developers.lseg.com/en/article-catalog/article/introduction-machine-readable-news-elektron-websocket-api-refinitiv).
@@ -394,4 +394,4 @@ For further details, please check out the following resources:
 - [Getting Started with Version 2 Authentication for Real-Time - Optimized: Overview](https://developers.lseg.com/en/article-catalog/article/getting-started-with-version-2-authentication-for-refinitiv-real) article.
 - [Real-Time WebSocket API: The Real-Time Optimized Version 2 Authentication Migration Guide](https://developers.lseg.com/en/article-catalog/article/webSocket-api-rto-v2-authentication-migration-guide) article.
 
-For any questions related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com/spaces/152/websocket-api.html).
+For any questions related to this example or WebSocket API, please use the Developer Community [Q&A Forum](https://community.developers.refinitiv.com).
